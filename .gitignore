@@ -61,6 +61,11 @@ atlassian-ide-plugin.xml
 # Cursive Clojure plugin
 .idea/replstate.xml
 
+# IntelliJ auto-generated files
+.idea/.gitignore
+.idea/misc.xml
+.idea/vcs.xml
+
 # SonarLint plugin
 .idea/sonarlint/
 
@@ -115,3 +120,7 @@ gradle-app.setting
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Installing gradle via homebrew on mac installs gradlew, not gradle. We need to ignore this separately.
+gradlew*
+gradle/wrapper
