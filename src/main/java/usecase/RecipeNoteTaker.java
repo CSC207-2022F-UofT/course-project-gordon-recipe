@@ -1,5 +1,5 @@
 package usecase;
-import entity.Notes;
+import entity.Note;
 
 public class RecipeNoteTaker {
 
