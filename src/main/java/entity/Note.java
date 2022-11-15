@@ -1,39 +1,48 @@
 package entity;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+import database.LocalDateTimePersister;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@DatabaseTable(tableName = "notes")
 public class Note {
     /**
      * The ID of the note.
      */
+    @DatabaseField(id = true, canBeNull = false)
     private String id;
 
     /**
-     * The ID of the recipe the note is about.
+     * The recipe the note is about.
      */
-    private String recipeID;
+    @DatabaseField(canBeNull = false, foreign = true)
+    private Recipe recipe;
 
     /**
      * The body text of the note.
      */
+    @DatabaseField(canBeNull = false, width = 2000)
     private String text;
 
     /**
      * The date and time the note was created.
      */
+    @DatabaseField(canBeNull = false, persisterClass = LocalDateTimePersister.class)
     private LocalDateTime date;
 
     /**
      * Instantiates a new recipe note.
      * Generates a UUID for the note, and sets the date to today.
      *
-     * @param text     The note's body text
-     * @param recipeID The ID of the note's recipe
+     * @param text   The note's body text
+     * @param recipe The note's recipe
      */
-    public Note(String text, String recipeID) {
+    public Note(String text, Recipe recipe) {
         this.id = UUID.randomUUID().toString();
-        this.recipeID = recipeID;
+        this.recipe = recipe;
         this.text = text;
         this.date = LocalDateTime.now();
     }
@@ -53,12 +62,12 @@ public class Note {
         this.id = id;
     }
 
-    public String getRecipeID() {
-        return recipeID;
+    public Recipe getRecipe() {
+        return recipe;
     }
 
-    public void setRecipeID(String recipeID) {
-        this.recipeID = recipeID;
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     public String getText() {

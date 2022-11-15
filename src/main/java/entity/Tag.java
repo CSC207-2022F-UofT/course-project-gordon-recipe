@@ -1,32 +1,22 @@
 package entity;
 
-import java.util.UUID;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "tags")
 public class Tag {
-    /**
-     * The ID of the tag.
-     */
-    private String id;
-
-    /**
-     * The ID of the tag's recipe.
-     */
-    private String recipeID;
-
     /**
      * The name of the tag.
      */
+    @DatabaseField(id = true, canBeNull = false)
     private String name;
 
     /**
-     * Instantiates a new tag for a given recipe.
+     * Instantiates a new tag.
      *
-     * @param name     the name of the tag
-     * @param recipeID the ID of the recipe
+     * @param name the name of the tag
      */
-    public Tag(String name, String recipeID) {
-        this.id = UUID.randomUUID().toString();
-        this.recipeID = recipeID;
+    public Tag(String name) {
         this.name = name;
     }
 
@@ -35,22 +25,6 @@ public class Tag {
      */
     public Tag() {
 
-    }
-
-    public String getID() {
-        return id;
-    }
-
-    public void setID(String id) {
-        this.id = id;
-    }
-
-    public String getRecipeID() {
-        return recipeID;
-    }
-
-    public void setRecipeID(String recipeID) {
-        this.recipeID = recipeID;
     }
 
     public String getName() {

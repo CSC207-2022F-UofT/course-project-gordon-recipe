@@ -1,32 +1,22 @@
 package entity;
 
-import java.util.UUID;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "tools")
 public class Tool {
-    /**
-     * The ID of the tool.
-     */
-    private String id;
-
-    /**
-     * The ID of the tool's recipe.
-     */
-    private String recipeID;
-
     /**
      * The name of the tool.
      */
+    @DatabaseField(id = true, canBeNull = false)
     private String name;
 
     /**
-     * Instantiates a new tool for a given recipe.
+     * Instantiates a new tool.
      *
-     * @param name     the name of the tool
-     * @param recipeID the ID of the recipe
+     * @param name the name of the tool
      */
-    public Tool(String name, String recipeID) {
-        this.id = UUID.randomUUID().toString();
-        this.recipeID = recipeID;
+    public Tool(String name) {
         this.name = name;
     }
 
@@ -35,22 +25,6 @@ public class Tool {
      */
     public Tool() {
 
-    }
-
-    public String getID() {
-        return id;
-    }
-
-    public void setID(String id) {
-        this.id = id;
-    }
-
-    public String getRecipeID() {
-        return recipeID;
-    }
-
-    public void setRecipeID(String recipeID) {
-        this.recipeID = recipeID;
     }
 
     public String getName() {
