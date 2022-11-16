@@ -19,8 +19,6 @@ public class RecipeTest {
         ConnectionSource conn = db.getConnectionSource();
         Dao<Recipe, String> recipeDao = DaoManager.createDao(conn, Recipe.class);
 
-        TableUtils.createTable(conn, Recipe.class);
-
         Recipe recipeToSave = new Recipe("Pasta", 2, 20);
         recipeDao.create(recipeToSave);
 

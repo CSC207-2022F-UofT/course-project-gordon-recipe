@@ -4,11 +4,13 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import entity.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Database {
     /**
@@ -24,41 +26,41 @@ public class Database {
     /**
      * Recipes DAO.
      */
-    private final Dao<Recipe, String> recipes;
+    private Dao<Recipe, String> recipes;
 
     /**
      * RecipeTools DAO.
      */
-    private final Dao<RecipeTool, Integer> recipeTools;
+    private Dao<RecipeTool, Integer> recipeTools;
     /**
      * RecipeIngredients DAO.
      */
-    private final Dao<RecipeIngredient, Integer> recipeIngredients;
+    private Dao<RecipeIngredient, Integer> recipeIngredients;
     /**
      * RecipeTags DAO.
      */
-    private final Dao<RecipeTag, Integer> recipeTags;
+    private Dao<RecipeTag, Integer> recipeTags;
 
     /**
      * Tools DAO.
      */
-    private final Dao<Tool, String> tools;
+    private Dao<Tool, String> tools;
     /**
      * Ingredients DAO.
      */
-    private final Dao<Ingredient, String> ingredients;
+    private Dao<Ingredient, String> ingredients;
     /**
      * Tags DAO.
      */
-    private final Dao<Tag, String> tags;
+    private Dao<Tag, String> tags;
     /**
      * Notes DAO.
      */
-    private final Dao<Note, String> notes;
+    private Dao<Note, String> notes;
     /**
      * Steps DAO.
      */
-    private final Dao<Step, String> steps;
+    private Dao<Step, String> steps;
 
     /**
      * Initializes a new database from a URL to a persisted or in memory database.
@@ -69,17 +71,38 @@ public class Database {
         this.connection = DriverManager.getConnection(url);
         this.connectionSource = new JdbcConnectionSource(url);
 
-        this.recipes = DaoManager.createDao(connectionSource, Recipe.class);
+        initializeDataAccessObjects();
+        initializeTables();
+    }
 
-        this.recipeTools = DaoManager.createDao(connectionSource, RecipeTool.class);
-        this.recipeIngredients = DaoManager.createDao(connectionSource, RecipeIngredient.class);
-        this.recipeTags = DaoManager.createDao(connectionSource, RecipeTag.class);
+    private void initializeDataAccessObjects() throws SQLException {
+        recipes = DaoManager.createDao(connectionSource, Recipe.class);
+        recipeTools = DaoManager.createDao(connectionSource, RecipeTool.class);
+        recipeIngredients = DaoManager.createDao(connectionSource, RecipeIngredient.class);
+        recipeTags = DaoManager.createDao(connectionSource, RecipeTag.class);
+        tools = DaoManager.createDao(connectionSource, Tool.class);
+        ingredients = DaoManager.createDao(connectionSource, Ingredient.class);
+        tags = DaoManager.createDao(connectionSource, Tag.class);
+        notes = DaoManager.createDao(connectionSource, Note.class);
+        steps = DaoManager.createDao(connectionSource, Step.class);
+    }
 
-        this.tools = DaoManager.createDao(connectionSource, Tool.class);
-        this.ingredients = DaoManager.createDao(connectionSource, Ingredient.class);
-        this.tags = DaoManager.createDao(connectionSource, Tag.class);
-        this.notes = DaoManager.createDao(connectionSource, Note.class);
-        this.steps = DaoManager.createDao(connectionSource, Step.class);
+    private void initializeTables() throws SQLException {
+        List<Class> entities = List.of(
+                Recipe.class,
+                RecipeTool.class,
+                RecipeIngredient.class,
+                RecipeTag.class,
+                Tool.class,
+                Ingredient.class,
+                Tag.class,
+                Note.class,
+                Step.class
+        );
+
+        for (Class<?> entity : entities) {
+            TableUtils.createTableIfNotExists(connectionSource, entity);
+        }
     }
 
     public Connection getConnection() {

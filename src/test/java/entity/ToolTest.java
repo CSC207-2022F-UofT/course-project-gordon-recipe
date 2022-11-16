@@ -22,10 +22,6 @@ public class ToolTest {
         Dao<Tool, String> tools = db.getTools();
         Dao<RecipeTool, Integer> recipeTools = db.getRecipeTools();
 
-        TableUtils.createTable(recipes);
-        TableUtils.createTable(tools);
-        TableUtils.createTable(recipeTools);
-
         Recipe omelette = new Recipe("Omelette", 1, 5);
         Recipe pancakes = new Recipe("Pancakes", 3, 20);
         Recipe cake = new Recipe("Cake", 8, 60);

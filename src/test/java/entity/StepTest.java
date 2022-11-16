@@ -18,9 +18,6 @@ public class StepTest {
         Dao<Recipe, String> recipes = db.getRecipes();
         Dao<Step, String> steps = db.getSteps();
 
-        TableUtils.createTable(recipes);
-        TableUtils.createTable(steps);
-
         Recipe omelette = new Recipe("Scrambled Eggs", 1, 10);
 
         List<Step> omeletteSteps = List.of(

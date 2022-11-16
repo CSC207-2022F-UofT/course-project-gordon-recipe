@@ -124,3 +124,6 @@ replay_pid*
 # Installing gradle via homebrew on mac installs gradlew, not gradle. We need to ignore this separately.
 gradlew*
 gradle/wrapper
+
+# Recipe Manager local database
+recipes.db
