@@ -1,4 +1,4 @@
-package database_interactor;
+package database;
 
 public class ExternalDatabase {
 }
