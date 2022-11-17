@@ -43,7 +43,7 @@ public class DatabaseTest {
     public void DatabaseLocal() throws SQLException {
         Database db = LocalDatabase.singleton;
 
-        Dao<Recipe, String> recipes = db.getRecipes();
+        Dao<Recipe, String> recipes = db.getDao(Recipe.class);
 
         Recipe pie = new Recipe("Pie", 10, 80);
         recipes.create(pie);

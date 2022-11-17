@@ -15,8 +15,8 @@ public class StepTest {
     public void StoredStep() throws SQLException {
         Database db = new InMemoryDatabase();
 
-        Dao<Recipe, String> recipes = db.getRecipes();
-        Dao<Step, String> steps = db.getSteps();
+        Dao<Recipe, String> recipes = db.getDao(Recipe.class);
+        Dao<Step, String> steps = db.getDao(Step.class);
 
         Recipe omelette = new Recipe("Scrambled Eggs", 1, 10);
 

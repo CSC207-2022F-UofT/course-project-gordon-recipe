@@ -16,8 +16,7 @@ public class RecipeTest {
     public void StoredRecipe() throws SQLException {
         Database db = new InMemoryDatabase();
 
-        ConnectionSource conn = db.getConnectionSource();
-        Dao<Recipe, String> recipeDao = DaoManager.createDao(conn, Recipe.class);
+        Dao<Recipe, String> recipeDao = db.getDao(Recipe.class);
 
         Recipe recipeToSave = new Recipe("Pasta", 2, 20);
         recipeDao.create(recipeToSave);

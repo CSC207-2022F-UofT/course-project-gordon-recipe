@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 /**
  * A persisted database stored on the user's local disk.
- * This database should be used for implementing use-cases, and should not be used for tests.
+ * This database should be used for running use-cases, and should not be used for tests of use-cases.
  */
-public class LocalDatabase extends Database {
+public class LocalDatabase extends SQLiteDatabase {
     public static final LocalDatabase singleton = getSingleton();
 
     public LocalDatabase() throws SQLException {

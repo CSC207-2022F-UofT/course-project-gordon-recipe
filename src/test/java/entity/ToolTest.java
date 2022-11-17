@@ -18,9 +18,9 @@ public class ToolTest {
     public void ForeignKeyToolAssociation() throws SQLException {
         Database db = new InMemoryDatabase();
 
-        Dao<Recipe, String> recipes = db.getRecipes();
-        Dao<Tool, String> tools = db.getTools();
-        Dao<RecipeTool, Integer> recipeTools = db.getRecipeTools();
+        Dao<Recipe, String> recipes = db.getDao(Recipe.class);
+        Dao<Tool, String> tools = db.getDao(Tool.class);
+        Dao<RecipeTool, Integer> recipeTools = db.getDao(RecipeTool.class);
 
         Recipe omelette = new Recipe("Omelette", 1, 5);
         Recipe pancakes = new Recipe("Pancakes", 3, 20);
