@@ -29,4 +29,12 @@ public class RecipeIngredient {
     public RecipeIngredient() {
 
     }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
 }
