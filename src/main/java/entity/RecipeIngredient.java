@@ -12,13 +12,13 @@ public class RecipeIngredient {
     private Recipe recipe;
 
     @DatabaseField(foreign = true)
-    private Ingredient ingredient;
+    private static Ingredient ingredient;
 
     /**
      * The quantity of the ingredient, e.g. "1 cup" or "12 grams"
      */
     @DatabaseField(canBeNull = false)
-    private String quantity;
+    private static String quantity;
 
     public RecipeIngredient(Recipe recipe, Ingredient ingredient, String quantity) {
         this.recipe = recipe;
@@ -28,5 +28,13 @@ public class RecipeIngredient {
 
     public RecipeIngredient() {
 
+    }
+
+    public static Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public static String getQuantity() {
+        return quantity;
     }
 }
