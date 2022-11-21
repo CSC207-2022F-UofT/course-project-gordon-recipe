@@ -1,9 +1,6 @@
 package entity;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 import database.Database;
 import database.InMemoryDatabase;
 import org.junit.jupiter.api.Assertions;
