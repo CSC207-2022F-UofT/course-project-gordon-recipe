@@ -21,12 +21,15 @@ public class RecipeRecommenderTest {
 
             Recipe pie = new Recipe("Pie", 10, 10);
             Recipe lasagna = new Recipe("Lasagna", 3, 120);
+            Recipe sushi = new Recipe("Sushi", 6, 25);
 
             pie.setTimesCooked(10);
             lasagna.setTimesCooked(3);
+            sushi.setTimesCooked(5);
 
             recipes.create(pie);
             recipes.create(lasagna);
+            recipes.create(sushi);
 
             Recipe recommendation = recommender.getRecommendation();
 

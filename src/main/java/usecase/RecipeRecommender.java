@@ -4,7 +4,10 @@ import com.j256.ormlite.dao.Dao;
 import database.Database;
 import entity.Recipe;
 
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RecipeRecommender {
     private final Database database;
@@ -30,6 +33,40 @@ public class RecipeRecommender {
     }
 
     private Recipe recommendationAlgorithm(ArrayList<Recipe> recipeList) {
+
+        return recommendationTypeA(recipeList);
+
+        // Implemented ideas:
+        // (0) Because you've made "Recipe name" x times
+
+        // Future update ideas:
+        // (1) Because you've liked this recipe
+        // (2) We think you'd like this recipe (random)
+        // (3) Because you liked x number of recipes with (ingredient)
+
+    }
+
+    private Recipe recommendationTypeA(List<Recipe> recipeList) {
+        // make list of recipes previously cooked
+        ArrayList<Recipe> previouslyMade = new ArrayList<>();
+        for (Recipe recipe : recipeList) {
+            if (recipe.getTimesCooked() > 0) {
+                previouslyMade.add(recipe);
+            }
+        }
+
+        // if size is zero, just recommend a random recipe
+        if (previouslyMade.size() == 0) {
+            Collections.shuffle(recipeList);
+            return recipeList.get(0);
+        }
+
+        // if size is less than two, pick the first one
+        if (previouslyMade.size() < 3) {
+            return previouslyMade.get(0);
+        }
+
+        // else, sort list by times cooked
         recipeList.sort((o1, o2) -> {
             int t1 = o1.getTimesCooked();
             int t2 = o2.getTimesCooked();
@@ -37,6 +74,18 @@ public class RecipeRecommender {
             return Integer.compare(t2, t1);
         });
 
-        return recipeList.get(0);
+        // reduce to top 1/3 of most cooked
+        ArrayList<Recipe> topThird = new ArrayList<>(recipeList.subList(0, recipeList.size() / 3));
+
+        // return a random element from this list
+        Collections.shuffle(topThird);
+        return topThird.get(0);
+
     }
+
+
+
+
+
 }
+
