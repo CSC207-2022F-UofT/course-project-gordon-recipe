@@ -34,4 +34,11 @@ public class Tool {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean equals(Tool t){
+        if (name.equals(t.getName())) {
+            return true;
+        }
+        return false;
+    }
 }

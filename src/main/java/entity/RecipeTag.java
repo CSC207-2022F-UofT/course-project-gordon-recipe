@@ -22,4 +22,7 @@ public class RecipeTag {
     public RecipeTag() {
 
     }
+    public Tag getTag() {
+        return tag;
+    }
 }

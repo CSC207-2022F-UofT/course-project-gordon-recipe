@@ -2,7 +2,7 @@ package entity;
 
 import com.j256.ormlite.field.DatabaseField;
 
-public class Ingredient {
+public class Ingredient{
     /**
      * The name of the ingredient.
      */
@@ -31,5 +31,12 @@ public class Ingredient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean equals(Ingredient i){
+        if (name.equals(i.getName())) {
+            return true;
+        }
+        return false;
     }
 }

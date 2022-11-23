@@ -34,4 +34,11 @@ public class Tag {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean equals(Tag t){
+        if (name.equals(t.getName())) {
+            return true;
+        }
+        return false;
+    }
 }

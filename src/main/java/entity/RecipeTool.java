@@ -11,6 +11,8 @@ public class RecipeTool {
     @DatabaseField(foreign = true)
     private Recipe recipe;
 
+
+
     @DatabaseField(foreign = true)
     private Tool tool;
 
@@ -21,5 +23,9 @@ public class RecipeTool {
 
     public RecipeTool() {
 
+    }
+
+    public Tool getTool() {
+        return tool;
     }
 }
