@@ -62,7 +62,7 @@ public class RecipeDataConverterTest {
     }
 
     @Test
-    public void ImportTest() throws SQLException{
+    public void ImportTest() throws SQLException {
         Database db = new InMemoryDatabase();
 
         Recipe recipe = new Recipe("apple pi", 3, 14);

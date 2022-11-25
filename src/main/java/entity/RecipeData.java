@@ -22,7 +22,7 @@ public class RecipeData implements Serializable {
             List<RecipeTool> recipeTools,
             List<Step> steps,
             List<Note> notes
-    ){
+    ) {
         this.recipe = recipe;
         this.recipeIngredients = recipeIngredients;
         this.recipeTags = recipeTags;
