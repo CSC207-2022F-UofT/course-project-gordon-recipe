@@ -2,7 +2,9 @@ package entity;
 
 import com.j256.ormlite.field.DatabaseField;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
     /**
      * The name of the ingredient.
      */
