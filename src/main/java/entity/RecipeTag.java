@@ -24,4 +24,8 @@ public class RecipeTag implements Serializable {
     public RecipeTag() {
 
     }
+
+    public Tag getTag() {
+        return tag;
+    }
 }

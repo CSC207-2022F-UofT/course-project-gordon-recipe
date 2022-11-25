@@ -24,4 +24,8 @@ public class RecipeTool implements Serializable {
     public RecipeTool() {
 
     }
+
+    public Tool getTool() {
+        return tool;
+    }
 }

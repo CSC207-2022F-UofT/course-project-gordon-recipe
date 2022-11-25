@@ -15,6 +15,12 @@ public class RecipeDataConverter {
     private final Dao<Step, String> stepDao;
     private final Dao<Note, String> noteDao;
 
+    private final Dao<Ingredient, String> ingredientDao;
+
+    private final Dao<Tag, String> tagDao;
+
+    private final Dao<Tool, String> toolDao;
+
     public RecipeDataConverter(Database database) {
         this.recipeDao = database.getDao(Recipe.class);
         this.recipeIngredientDao = database.getDao(RecipeIngredient.class);
@@ -22,6 +28,9 @@ public class RecipeDataConverter {
         this.recipeToolDao = database.getDao(RecipeTool.class);
         this.stepDao = database.getDao(Step.class);
         this.noteDao = database.getDao(Note.class);
+        this.ingredientDao = database.getDao(Ingredient.class);
+        this.tagDao = database.getDao(Tag.class);
+        this.toolDao = database.getDao(Tool.class);
     }
 
     public RecipeData exportRecipe(Recipe recipe) {
@@ -50,6 +59,15 @@ public class RecipeDataConverter {
             recipeToolDao.create(recipeData.getRecipeTools());
             stepDao.create(recipeData.getSteps());
             noteDao.create(recipeData.getNotes());
+            for(RecipeIngredient recipeIngredient : recipeData.getRecipeIngredients()){
+                ingredientDao.create(recipeIngredient.getIngredient());
+            }
+            for(RecipeTag recipeTag : recipeData.getRecipeTags()){
+                tagDao.create(recipeTag.getTag());
+            }
+            for(RecipeTool recipeTool : recipeData.getRecipeTools()){
+                toolDao.create(recipeTool.getTool());
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
