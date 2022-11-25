@@ -44,12 +44,12 @@ public class RecipeDataConverter {
 
     public void importRecipe(RecipeData recipeData) {
         try {
-            recipeDao.create(recipeData.recipe());
-            recipeIngredientDao.create(recipeData.recipeIngredients());
-            recipeTagDao.create(recipeData.recipeTags());
-            recipeToolDao.create(recipeData.recipeTools());
-            stepDao.create(recipeData.steps());
-            noteDao.create(recipeData.notes());
+            recipeDao.create(recipeData.getRecipe());
+            recipeIngredientDao.create(recipeData.getRecipeIngredients());
+            recipeTagDao.create(recipeData.getRecipeTags());
+            recipeToolDao.create(recipeData.getRecipeTools());
+            stepDao.create(recipeData.getSteps());
+            noteDao.create(recipeData.getNotes());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
