@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "recipe_ingredients")
-public class RecipeIngredient {
+public class RecipeIngredient implements RecipePreparation {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -30,7 +30,8 @@ public class RecipeIngredient {
 
     }
 
-    public Ingredient getIngredient() {
+    @Override
+    public Object getPreparation() {
         return ingredient;
     }
 }

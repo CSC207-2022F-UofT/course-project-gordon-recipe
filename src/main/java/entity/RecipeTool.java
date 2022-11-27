@@ -4,13 +4,12 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "recipe_tools")
-public class RecipeTool {
+public class RecipeTool implements RecipePreparation {
     @DatabaseField(generatedId = true)
     private int id;
 
     @DatabaseField(foreign = true)
     private Recipe recipe;
-
 
 
     @DatabaseField(foreign = true)
@@ -25,7 +24,8 @@ public class RecipeTool {
 
     }
 
-    public Tool getTool() {
+    @Override
+    public Object getPreparation() {
         return tool;
     }
 }

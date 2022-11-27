@@ -16,8 +16,9 @@ import java.util.List;
 public class RecipeSearcherTest {
 
     private RecipeManager manager;
-    private RecipeSearcher searcher;
-    private Dao<Recipe, String> recipes;
+    private RecipeSearcher<Ingredient> ingredientSearcher;
+    private RecipeSearcher<Tool> toolSearcher;
+    private RecipeSearcher<Tag> tagSearcher;
     private Dao<RecipeIngredient, Integer> recipeIngredients;
 
     private Dao<RecipeTool, Integer> recipeTools;
@@ -25,13 +26,13 @@ public class RecipeSearcherTest {
     private Dao<RecipeTag, Integer> recipeTags;
 
 
-
     @BeforeEach
     public void Setup() throws SQLException {
         Database database = new InMemoryDatabase();
         manager = new RecipeManager(database);
-        searcher = new RecipeSearcher<>(database);
-        recipes = database.getDao(Recipe.class);
+        ingredientSearcher = new RecipeSearcher<>(database);
+        toolSearcher = new RecipeSearcher<>(database);
+        tagSearcher = new RecipeSearcher<>(database);
         recipeIngredients = database.getDao(RecipeIngredient.class);
         recipeTools = database.getDao(RecipeTool.class);
         recipeTags = database.getDao(RecipeTag.class);
@@ -62,7 +63,7 @@ public class RecipeSearcherTest {
         List<Ingredient> ingredientList = new ArrayList<>();
         ingredientList.add(beefSirloin);
 
-        List<Recipe> returnRecipe = searcher.searchRecipe(ingredientList);
+        List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(steak);
 

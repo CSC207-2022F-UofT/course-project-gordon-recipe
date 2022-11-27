@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "recipe_tags")
-public class RecipeTag {
+public class RecipeTag implements RecipePreparation {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -22,7 +22,9 @@ public class RecipeTag {
     public RecipeTag() {
 
     }
-    public Tag getTag() {
+
+    @Override
+    public Object getPreparation() {
         return tag;
     }
 }

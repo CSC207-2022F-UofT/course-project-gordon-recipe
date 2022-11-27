@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "tags")
-public class Tag {
+public class Tag implements Preparation {
     /**
      * The name of the tag.
      */
@@ -35,9 +35,10 @@ public class Tag {
         this.name = name;
     }
 
-    public boolean equals(Tag t){
-        if (name.equals(t.getName())) {
-            return true;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Tag) {
+            return name.equals(((Tag) o).getName());
         }
         return false;
     }

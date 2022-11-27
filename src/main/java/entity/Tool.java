@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "tools")
-public class Tool {
+public class Tool implements Preparation {
     /**
      * The name of the tool.
      */
@@ -35,9 +35,10 @@ public class Tool {
         this.name = name;
     }
 
-    public boolean equals(Tool t){
-        if (name.equals(t.getName())) {
-            return true;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Tool) {
+            return name.equals(((Tool) o).getName());
         }
         return false;
     }
