@@ -1,7 +1,6 @@
 package usecase;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.query.In;
 import database.Database;
 import database.InMemoryDatabase;
 import entity.*;
@@ -49,8 +48,6 @@ public class RecipeSearcherTest {
         manager.createRecipe(tomatoSpaghetti);
         manager.createRecipe(steak);
 
-        Ingredient tomato = new Ingredient("Tomato");
-        Ingredient pasta = new Ingredient("Pasta");
         Ingredient beefSirloin = new Ingredient("Beef Sirloin");
 
         RecipeIngredient steakIngredient = new RecipeIngredient(steak, beefSirloin, "200g");
@@ -92,7 +89,7 @@ public class RecipeSearcherTest {
         List<Tool> toolList = new ArrayList<>();
         toolList.add(pan);
 
-        List<Recipe> returnRecipe = searcher.searchRecipe(toolList);
+        List<Recipe> returnRecipe = toolSearcher.searchRecipe(toolList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(steak);
 
@@ -121,7 +118,7 @@ public class RecipeSearcherTest {
         List<Tag> tagList = new ArrayList<>();
         tagList.add(beef);
 
-        List<Recipe> returnRecipe = searcher.searchRecipe(tagList);
+        List<Recipe> returnRecipe = tagSearcher.searchRecipe(tagList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(steak);
 
