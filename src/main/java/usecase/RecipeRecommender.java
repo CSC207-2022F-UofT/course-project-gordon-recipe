@@ -8,18 +8,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * RecipeRecommender is a use-case for recommending recipes
+ */
 public class RecipeRecommender {
     private final Database database;
 
+    /**
+     * Initialize a new recipe recommender
+     *
+     * @param database the database to recommend recipes from
+     */
     public RecipeRecommender(Database database) {
         this.database = database;
     }
 
+    /**
+     * Returns a recipe recommendation
+     *
+     * @return the recommended recipe
+     */
     public Recipe getRecommendation() {
         ArrayList<Recipe> data = getRecommendationData();
         return recommendationAlgorithm(data);
     }
 
+
+    /**
+     * Goes to the database and collects all entries
+     *
+     * @return exhaustive list of recipes
+     */
     private ArrayList<Recipe> getRecommendationData() {
         Dao<Recipe, String> recipes = database.getDao(Recipe.class);
         ArrayList<Recipe> recipeList = new ArrayList<>();
@@ -31,10 +50,23 @@ public class RecipeRecommender {
         return recipeList;
     }
 
+    /**
+     * The master recommendation algorithm that calls a specific recommendation algorithm
+     *
+     * @param recipeList the exhaustive list of recipes
+     * @return a recommended recipe
+     */
     private Recipe recommendationAlgorithm(ArrayList<Recipe> recipeList) {
         return recommendationTypeA(recipeList);
     }
 
+    /**
+     * A specific recommendation algorithm that returns a recipe based on
+     * how many times it has been cooked.
+     *
+     * @param recipeList an exhaustive list of recipes from the database
+     * @return a recommended recipe
+     */
     private Recipe recommendationTypeA(List<Recipe> recipeList) {
         // make list of recipes previously cooked
         ArrayList<Recipe> previouslyMade = new ArrayList<>();
