@@ -3,8 +3,10 @@ package entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName = "tags")
-public class Tag {
+public class Tag implements Serializable {
     /**
      * The name of the tag.
      */
