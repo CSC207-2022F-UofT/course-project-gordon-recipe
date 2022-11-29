@@ -4,7 +4,6 @@ import com.j256.ormlite.dao.Dao;
 import database.Database;
 import entity.Recipe;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,17 +32,7 @@ public class RecipeRecommender {
     }
 
     private Recipe recommendationAlgorithm(ArrayList<Recipe> recipeList) {
-
         return recommendationTypeA(recipeList);
-
-        // Implemented ideas:
-        // (0) Because you've made "Recipe name" x times
-
-        // Future update ideas:
-        // (1) Because you've liked this recipe
-        // (2) We think you'd like this recipe (random)
-        // (3) Because you liked x number of recipes with (ingredient)
-
     }
 
     private Recipe recommendationTypeA(List<Recipe> recipeList) {
@@ -80,12 +69,6 @@ public class RecipeRecommender {
         // return a random element from this list
         Collections.shuffle(topThird);
         return topThird.get(0);
-
     }
-
-
-
-
-
 }
 
