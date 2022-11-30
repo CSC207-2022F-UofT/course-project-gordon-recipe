@@ -7,6 +7,11 @@ import entity.*;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Facilitates import/export functionality by performing conversion
+ * from a group of objects in a given database to a RecipeData object,
+ * or vice versa.
+ */
 public class RecipeDataConverter {
     private final Dao<Recipe, String> recipeDao;
     private final Dao<RecipeIngredient, Integer> recipeIngredientDao;
@@ -21,6 +26,12 @@ public class RecipeDataConverter {
 
     private final Dao<Tool, String> toolDao;
 
+    /**
+     * Creates a recipe data converter connected to the given database,
+     * setting up the various DAOs of the recipe data converter.
+     *
+     * @param database The database to read from (when exporting) / write to (when importing)
+     */
     public RecipeDataConverter(Database database) {
         this.recipeDao = database.getDao(Recipe.class);
         this.recipeIngredientDao = database.getDao(RecipeIngredient.class);
@@ -33,6 +44,16 @@ public class RecipeDataConverter {
         this.toolDao = database.getDao(Tool.class);
     }
 
+    /**
+     * Creates a RecipeData object for the given recipe based on the objects
+     * stored in the database of this recipe data converter.
+     *
+     * @param recipe the recipe to create a RecipeData object for --
+     *               all ingredients, tags, tools, etc. in the returned
+     *               RecipeData object are for this recipe
+     * @return a new RecipeData object, containing the recipe
+     * and all of its ingredients, tags, tools, etc.
+     */
     public RecipeData exportRecipe(Recipe recipe) {
         List<RecipeIngredient> recipeIngredients;
         List<RecipeTag> recipeTags;
@@ -51,6 +72,13 @@ public class RecipeDataConverter {
         return new RecipeData(recipe, recipeIngredients, recipeTags, recipeTools, steps, notes);
     }
 
+    /**
+     * Creates new objects in this recipe data converter's database
+     * based on the given RecipeData object
+     *
+     * @param recipeData the RecipeData object whose recipe, ingredients, tags, tools, etc.
+     *                   will be added to the database
+     */
     public void importRecipe(RecipeData recipeData) {
         try {
             recipeDao.create(recipeData.getRecipe());
@@ -73,7 +101,20 @@ public class RecipeDataConverter {
         }
     }
 
-    private <T, I> List<T> getByRecipeId(Dao<T, I> dao, Recipe recipe) throws SQLException {
+    /**
+     * Returns the list of items from the given DAO that belong to the given recipe.
+     *
+     * @param dao    a DAO for ingredients/tags/tools/etc.
+     * @param recipe the recipe that all the ingredients/tags/tools/etc.
+     *               in the returned list pertain to
+     * @param <T>    the type of object that is being gotten
+     *               (RecipeIngredient, RecipeTag, RecipeTool, etc)
+     * @param <ID>   the type for the ID column for the DAO
+     * @return a list that contains precisely every ingredient/tag/tool/etc.
+     * from the DAO that pertains to the given recipe
+     * @throws SQLException if the database query fails
+     */
+    private <T, ID> List<T> getByRecipeId(Dao<T, ID> dao, Recipe recipe) throws SQLException {
         return dao.query(
                 dao.queryBuilder()
                         .where().eq("recipe_id", recipe.getID())
