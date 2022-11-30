@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "tags")
-public class Tag implements Serializable {
+public class Tag implements Serializable, Preparation {
     /**
      * The name of the tag.
      */
@@ -35,5 +35,13 @@ public class Tag implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Tag) {
+            return name.equals(((Tag) o).getName());
+        }
+        return false;
     }
 }
