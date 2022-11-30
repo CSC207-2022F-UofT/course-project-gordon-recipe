@@ -1,6 +1,7 @@
 package interface_adapters.tui;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A helper class for receiving input from the user in a textual interface.
@@ -108,7 +109,13 @@ public class TextualReader {
                 return;
             }
 
-            TextualOperation operation = operations.stream().filter(e -> e.getCode().equals(choice)).toList().get(0);
+            // We suppress the warning here because IntelliJ is suggesting to refactor this,
+            // but refactoring it will break the GitHub auto-grading.
+            @SuppressWarnings("all")
+            TextualOperation operation = operations.stream()
+                    .filter(e -> e.getCode().equals(choice))
+                    .collect(Collectors.toList())
+                    .get(0);
 
             if (operation != null) {
                 operation.run();
@@ -126,6 +133,7 @@ public class TextualReader {
      *                Values are descriptions of choices, and can be empty strings.
      * @return the key of the choice the user selected, or null if the user decided to exit.
      */
+    @SuppressWarnings("unused")
     public String promptFromMap(Map<String, String> choices, String header) {
         while (true) {
             Colour.printHeader(header);

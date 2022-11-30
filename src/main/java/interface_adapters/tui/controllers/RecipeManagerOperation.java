@@ -11,6 +11,7 @@ import usecase.RecipeManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * An operation for running the recipe manager use-case.
@@ -92,7 +93,7 @@ public class RecipeManagerOperation implements TextualOperation {
 
             @Override
             public void run() {
-                List<Tool> tools = reader.getList("Tool").stream().map(Tool::new).toList();
+                List<Tool> tools = reader.getList("Tool").stream().map(Tool::new).collect(Collectors.toList());
                 recipeManager.createRecipeTools(recipe, tools);
 
                 System.out.printf("Added %d tools to the recipe.", tools.size());
@@ -113,7 +114,7 @@ public class RecipeManagerOperation implements TextualOperation {
 
             @Override
             public void run() {
-                List<Tag> tags = reader.getList("Tag").stream().map(Tag::new).toList();
+                List<Tag> tags = reader.getList("Tag").stream().map(Tag::new).collect(Collectors.toList());
                 recipeManager.createRecipeTags(recipe, tags);
 
                 System.out.printf("Added %d tags to the recipe", tags.size());
