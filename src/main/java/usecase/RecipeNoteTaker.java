@@ -22,7 +22,7 @@ public class RecipeNoteTaker {
     }
 
     /**
-     * Stores a recipe in the database.
+     * Stores a note in the database.
      *
      * @param note the note to store
      */
@@ -35,9 +35,9 @@ public class RecipeNoteTaker {
     }
 
     /**
-     * Updates a recipe in the database.
+     * Updates a note in the database.
      *
-     * @param note the recipe to update
+     * @param note the note to update
      */
     public void updateNote(Note note) {
         try {
@@ -48,9 +48,9 @@ public class RecipeNoteTaker {
     }
 
     /**
-     * Deletes a recipe in the database.
+     * Deletes a note in the database.
      *
-     * @param note the recipe to delete
+     * @param note the note to delete
      */
     public void deleteNote(Note note) {
         try {

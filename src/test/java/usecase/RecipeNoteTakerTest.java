@@ -77,7 +77,10 @@ public class RecipeNoteTakerTest {
         notes.create(notesList);
 
         List<Note> retrievedNotes = taker.getAllNotes();
+        System.out.println(notesList);
 
         Assertions.assertEquals(2, retrievedNotes.size());
+
+        //Assertions.assertEquals("This is note 1"+"This is note 2", retrievedNotes.toString());
     }
 }
