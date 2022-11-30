@@ -6,12 +6,13 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "recipe_tools")
-public class RecipeTool implements Serializable {
+public class RecipeTool implements Serializable, RecipePreparation {
     @DatabaseField(generatedId = true)
     private int id;
 
     @DatabaseField(foreign = true)
     private Recipe recipe;
+
 
     @DatabaseField(foreign = true)
     private Tool tool;
@@ -26,6 +27,11 @@ public class RecipeTool implements Serializable {
     }
 
     public Tool getTool() {
+        return tool;
+    }
+
+    @Override
+    public Object getPreparation() {
         return tool;
     }
 }

@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable {
+public class Ingredient implements Serializable, Preparation {
     /**
      * The name of the ingredient.
      */
@@ -33,5 +33,13 @@ public class Ingredient implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Ingredient) {
+            return name.equals(((Ingredient) o).getName());
+        }
+        return false;
     }
 }
