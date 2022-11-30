@@ -1,7 +1,6 @@
 package usecase;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.query.In;
 import database.Database;
 import entity.*;
 
