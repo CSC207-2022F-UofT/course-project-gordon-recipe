@@ -31,9 +31,31 @@ public class RecipeSearcher<T extends Preparation> {
             for (Recipe recipe : recipes) {
                 List<T> recipePreparation = searchPreparation(recipe, prep);
                 for (T preparation : recipePreparation) {
-                    if (preparation.equals(prep)) {
+                    if (preparation.equals(prep) && !hasRecipe(returnRecipe, recipe)) {
                         returnRecipe.add(recipe);
                     }
+                }
+            }
+
+        }
+
+        List<Recipe> tempRecipe = new ArrayList<>();
+        for (Recipe recipe : returnRecipe) {
+            tempRecipe.add(recipe);
+        }
+
+        for (T prep : searchList) {
+            for (Recipe recipe : tempRecipe) {
+                List<T> recipePreparation = searchPreparation(recipe, prep);
+                boolean hasPreparation = false;
+                for (T preparation : recipePreparation) {
+                    if (preparation.equals(prep)) {
+                        hasPreparation = true;
+                        break;
+                    }
+                }
+                if (!hasPreparation) {
+                    returnRecipe.remove(recipe);
                 }
             }
         }
@@ -76,17 +98,13 @@ public class RecipeSearcher<T extends Preparation> {
         return preparationList;
     }
 
-    private List<T> removeDuplicates(List<T> lst) {
-        for (int i = 0; i < lst.size(); i++) {
-            Object curr = lst.get(i);
-
-            for (int j = i + 1; j < lst.size(); j++) {
-                if (curr.equals(lst.get(j))) {
-                    lst.remove(lst.get(j));
-                }
+    private boolean hasRecipe(List<Recipe> returnRecipe, Recipe recipe) {
+        for (Recipe r : returnRecipe) {
+            if (recipe.equals(r)) {
+                return true;
             }
         }
-        return lst;
+        return false;
     }
 
 
