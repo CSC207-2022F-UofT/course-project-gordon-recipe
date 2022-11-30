@@ -3,8 +3,10 @@ package entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName = "tools")
-public class Tool implements Preparation {
+public class Tool implements Serializable, Preparation {
     /**
      * The name of the tool.
      */

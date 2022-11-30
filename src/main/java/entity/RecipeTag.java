@@ -3,8 +3,10 @@ package entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName = "recipe_tags")
-public class RecipeTag implements RecipePreparation {
+public class RecipeTag implements Serializable, RecipePreparation {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -25,6 +27,10 @@ public class RecipeTag implements RecipePreparation {
 
     @Override
     public Object getPreparation() {
+        return tag;
+    }
+
+    public Tag getTag() {
         return tag;
     }
 }

@@ -3,8 +3,10 @@ package entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName = "recipe_tools")
-public class RecipeTool implements RecipePreparation {
+public class RecipeTool implements Serializable, RecipePreparation {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -22,6 +24,10 @@ public class RecipeTool implements RecipePreparation {
 
     public RecipeTool() {
 
+    }
+
+    public Tool getTool() {
+        return tool;
     }
 
     @Override
