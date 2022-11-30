@@ -141,24 +141,20 @@ public class RecipeSearcherTest {
         manager.createRecipe(friedTomatoEgg);
 
         Ingredient tomato = new Ingredient("Tomato");
-        Ingredient tomatoSauce = new Ingredient("Tomato Sauce");
 
         RecipeIngredient tomatoTomatoSpaghetti = new RecipeIngredient(tomatoSpaghetti, tomato, "2");
         RecipeIngredient tomatoTomatoJuice = new RecipeIngredient(tomatoJuice, tomato, "3");
         RecipeIngredient tomatoFriedTomatoEgg = new RecipeIngredient(friedTomatoEgg, tomato, "3");
-        RecipeIngredient tomatoSauceTomatoSpaghetti = new RecipeIngredient(tomatoSpaghetti, tomatoSauce, "2 cups");
         try {
             recipeIngredients.create(tomatoTomatoSpaghetti);
             recipeIngredients.create(tomatoTomatoJuice);
             recipeIngredients.create(tomatoFriedTomatoEgg);
-            recipeIngredients.create(tomatoSauceTomatoSpaghetti);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         List<Ingredient> ingredientList = new ArrayList<>();
         ingredientList.add(tomato);
-        ingredientList.add(tomatoSauce);
 
         List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
         List<Recipe> expected = new ArrayList<>();
