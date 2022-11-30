@@ -2,7 +2,7 @@ package usecase;
 
 import com.j256.ormlite.dao.Dao;
 import database.Database;
-import entity.Recipe;
+import entity.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class RecipeManager {
     private final Dao<Recipe, Object> recipes;
+    private final Database database;
 
     /**
      * Initializes a new recipe manager.
@@ -20,6 +21,7 @@ public class RecipeManager {
      * @param database the database to manage recipes in
      */
     public RecipeManager(Database database) {
+        this.database = database;
         this.recipes = database.getDao(Recipe.class);
     }
 
@@ -63,11 +65,116 @@ public class RecipeManager {
     }
 
     /**
+     * Creates and stores tags with a recipe.
+     *
+     * @param recipe The recipe to attach tags to
+     * @param tags   The tags to attach to the recipe
+     */
+    public List<RecipeTag> createRecipeTags(Recipe recipe, List<Tag> tags) {
+        Dao<Tag, String> tagsDao = database.getDao(Tag.class);
+        Dao<RecipeTag, Integer> recipeTagsDao = database.getDao(RecipeTag.class);
+
+        List<RecipeTag> recipeTags = new ArrayList<>();
+
+        for (Tag tag : tags) {
+            RecipeTag recipeTag = new RecipeTag(recipe, tag);
+            recipeTags.add(recipeTag);
+
+            try {
+                tagsDao.createIfNotExists(tag);
+                recipeTagsDao.createIfNotExists(recipeTag);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return recipeTags;
+    }
+
+    /**
+     * Creates and stores tools with a recipe.
+     *
+     * @param recipe The recipe to attach tools to
+     * @param tools  The tools to attach to the recipe
+     */
+    public List<RecipeTool> createRecipeTools(Recipe recipe, List<Tool> tools) {
+        Dao<Tool, String> toolsDao = database.getDao(Tool.class);
+        Dao<RecipeTool, Integer> recipeToolsDao = database.getDao(RecipeTool.class);
+
+        List<RecipeTool> recipeTools = new ArrayList<>();
+
+        for (Tool tool : tools) {
+            RecipeTool recipeTool = new RecipeTool(recipe, tool);
+            recipeTools.add(recipeTool);
+
+            try {
+                toolsDao.createIfNotExists(tool);
+                recipeToolsDao.createIfNotExists(recipeTool);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return recipeTools;
+    }
+
+    /**
+     * Creates and stores recipe ingredients.
+     *
+     * @param recipeIngredients The recipe ingredients to store
+     */
+    public void createRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
+        Dao<Ingredient, String> ingredientsDao = database.getDao(Ingredient.class);
+        Dao<RecipeIngredient, Integer> recipeIngredientsDao = database.getDao(RecipeIngredient.class);
+
+        for (RecipeIngredient recipeIngredient : recipeIngredients) {
+            recipeIngredients.add(recipeIngredient);
+
+            try {
+                ingredientsDao.createIfNotExists(recipeIngredient.getIngredient());
+                recipeIngredientsDao.createIfNotExists(recipeIngredient);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * Creates and stores notes.
+     *
+     * @param notes The notes to save
+     */
+    public void createRecipeNotes(List<Note> notes) {
+        Dao<Note, String> notesDao = database.getDao(Note.class);
+
+        try {
+            notesDao.create(notes);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Creates and stores steps.
+     *
+     * @param steps The steps to save
+     */
+    public void createRecipeSteps(List<Step> steps) {
+        Dao<Step, String> stepsDao = database.getDao(Step.class);
+
+        try {
+            stepsDao.create(steps);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Returns a list of all recipes in the database.
      *
      * @return all recipes
      */
-    public List<Recipe> getAllRecipes() {
+    public ArrayList<Recipe> getAllRecipes() {
         ArrayList<Recipe> recipeList = new ArrayList<>();
 
         for (Recipe recipe : recipes) {
