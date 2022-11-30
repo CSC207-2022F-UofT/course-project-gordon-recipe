@@ -3,8 +3,10 @@ package entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName = "tags")
-public class Tag {
+public class Tag implements Serializable, Preparation {
     /**
      * The name of the tag.
      */
@@ -33,5 +35,13 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Tag) {
+            return name.equals(((Tag) o).getName());
+        }
+        return false;
     }
 }
