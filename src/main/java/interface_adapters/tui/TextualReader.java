@@ -131,6 +131,7 @@ public class TextualReader {
      * @param choices the map of choices the user can select from.
      *                Keys should be able to be easily typed by the user.
      *                Values are descriptions of choices, and can be empty strings.
+     * @param header  the header that precedes the map of choices.
      * @return the key of the choice the user selected, or null if the user decided to exit.
      */
     @SuppressWarnings("unused")
@@ -163,6 +164,47 @@ public class TextualReader {
                 return choice;
             } else {
                 System.out.printf("\nHmm, %s%s%s doesn't seem to be a choice.\n\n", Colour.YELLOW_BOLD, choice, Colour.RESET);
+            }
+        }
+    }
+
+    /**
+     * Prompts the user to select from a list of options, and returns the index of their choice.
+     * Uses 1-indexing when communicating with the user but converts to 0-indexing for internal use.
+     *
+     * @param list   the list of choices the user can select from
+     * @param header the header that precedes the list of choices
+     * @return the index of the choice the user selected, or null if the user decided to exit
+     */
+    public Integer getListIndexInput(List<String> list, String header) {
+        while (true) {
+            Colour.printHeader(header);
+            int counter = 1;
+            for (String choice : list) {
+                System.out.printf("%d) %s\n", counter, choice);
+                counter += 1;
+            }
+
+            System.out.printf("\nSelect a choice by its index, or type '%sexit%s' to quit:\n", Colour.YELLOW_BOLD, Colour.RESET);
+            System.out.print("Index: ");
+
+            String input = scanner.nextLine();
+
+            if (Objects.equals(input, "exit")) {
+                return null;
+            }
+
+            try {
+                int index = Integer.parseInt(input) - 1;
+                if (0 <= index && index < list.size()) {
+                    return index;
+                } else {
+                    System.out.printf("%s%s is not a valid index, try again.%s\n", Colour.RED, input, Colour.RESET);
+                }
+            } catch (NumberFormatException e) {
+                System.out.printf("%s%s doesn't look like a number, try again.%s\n", Colour.RED, input, Colour.RESET);
+            } catch (Exception e) {
+                System.out.println("Couldn't receive your input, try again.");
             }
         }
     }
