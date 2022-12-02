@@ -125,5 +125,86 @@ public class RecipeSearcherTest {
         Assertions.assertEquals(expected, returnRecipe);
     }
 
+    @Test
+    public void SearchRecipeTestManyRecipes() throws SQLException {
+        Recipe pie = new Recipe("Pie", 3, 120);
+        Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
+        Recipe steak = new Recipe("Steak", 1, 15);
+        Recipe tomatoJuice = new Recipe("Tomato Juice", 1, 5);
+        Recipe friedTomatoEgg = new Recipe("Stir Fried Tomato and Egg", 2, 10);
+
+
+        manager.createRecipe(pie);
+        manager.createRecipe(tomatoSpaghetti);
+        manager.createRecipe(steak);
+        manager.createRecipe(tomatoJuice);
+        manager.createRecipe(friedTomatoEgg);
+
+        Ingredient tomato = new Ingredient("Tomato");
+
+        RecipeIngredient tomatoTomatoSpaghetti = new RecipeIngredient(tomatoSpaghetti, tomato, "2");
+        RecipeIngredient tomatoTomatoJuice = new RecipeIngredient(tomatoJuice, tomato, "3");
+        RecipeIngredient tomatoFriedTomatoEgg = new RecipeIngredient(friedTomatoEgg, tomato, "3");
+        try {
+            recipeIngredients.create(tomatoTomatoSpaghetti);
+            recipeIngredients.create(tomatoTomatoJuice);
+            recipeIngredients.create(tomatoFriedTomatoEgg);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Ingredient> ingredientList = new ArrayList<>();
+        ingredientList.add(tomato);
+
+        List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
+        List<Recipe> expected = new ArrayList<>();
+        expected.add(tomatoSpaghetti);
+        expected.add(tomatoJuice);
+        expected.add(friedTomatoEgg);
+
+        Assertions.assertEquals(expected, returnRecipe);
+    }
+
+    @Test
+    public void SearchRecipeTestManyIngredients() throws SQLException {
+        Recipe pie = new Recipe("Pie", 3, 120);
+        Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
+        Recipe steak = new Recipe("Steak", 1, 15);
+        Recipe tomatoJuice = new Recipe("Tomato Juice", 1, 5);
+        Recipe friedTomatoEgg = new Recipe("Stir Fried Tomato and Egg", 2, 10);
+
+
+        manager.createRecipe(pie);
+        manager.createRecipe(tomatoSpaghetti);
+        manager.createRecipe(steak);
+        manager.createRecipe(tomatoJuice);
+        manager.createRecipe(friedTomatoEgg);
+
+        Ingredient tomato = new Ingredient("Tomato");
+        Ingredient pasta = new Ingredient("Pasta");
+
+        RecipeIngredient tomatoTomatoSpaghetti = new RecipeIngredient(tomatoSpaghetti, tomato, "2");
+        RecipeIngredient tomatoTomatoJuice = new RecipeIngredient(tomatoJuice, tomato, "3");
+        RecipeIngredient tomatoFriedTomatoEgg = new RecipeIngredient(friedTomatoEgg, tomato, "3");
+        RecipeIngredient pastaTomatoSpaghetti = new RecipeIngredient(tomatoSpaghetti, pasta, "150g");
+        try {
+            recipeIngredients.create(tomatoTomatoSpaghetti);
+            recipeIngredients.create(tomatoTomatoJuice);
+            recipeIngredients.create(tomatoFriedTomatoEgg);
+            recipeIngredients.create(pastaTomatoSpaghetti);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Ingredient> ingredientList = new ArrayList<>();
+        ingredientList.add(tomato);
+        ingredientList.add(pasta);
+
+        List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
+        List<Recipe> expected = new ArrayList<>();
+        expected.add(tomatoSpaghetti);
+
+        Assertions.assertEquals(expected, returnRecipe);
+    }
 
 }
