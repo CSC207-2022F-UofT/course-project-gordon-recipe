@@ -112,13 +112,12 @@ public class TextualReader {
             // We suppress the warning here because IntelliJ is suggesting to refactor this,
             // but refactoring it will break the GitHub auto-grading.
             @SuppressWarnings("all")
-            TextualOperation operation = operations.stream()
+            List<TextualOperation> matching_operations = operations.stream()
                     .filter(e -> e.getCode().equals(choice))
-                    .collect(Collectors.toList())
-                    .get(0);
+                    .collect(Collectors.toList());
 
-            if (operation != null) {
-                operation.run();
+            if (matching_operations.size() > 0) {
+                matching_operations.get(0).run();
             } else {
                 System.out.printf("\nHmm, %s%s%s doesn't seem to be a choice.\n\n", Colour.YELLOW_BOLD, choice, Colour.RESET);
             }
