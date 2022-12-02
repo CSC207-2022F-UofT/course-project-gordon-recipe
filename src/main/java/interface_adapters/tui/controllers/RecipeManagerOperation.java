@@ -169,7 +169,7 @@ public class RecipeManagerOperation implements TextualOperation {
             ArrayList<Recipe> recipes = recipeManager.getAllRecipes();
 
             for (Recipe recipe : recipes) {
-                System.out.printf("%s: %d servings, %d min. prep time", recipe.getName(), recipe.getServings(), recipe.getPrepTime());
+                System.out.printf("%s: %d servings, %d min. prep time\n", recipe.getName(), recipe.getServings(), recipe.getPrepTime());
             }
         }
     }
@@ -188,30 +188,18 @@ public class RecipeManagerOperation implements TextualOperation {
 
         @Override
         public void run() {
-            ArrayList<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<String> recipeNames = recipes.stream().map(Recipe::getName).collect(Collectors.toList());
 
             Colour.printHeader("Delete Recipe");
 
-            int counter = 1;
+            Integer indexToDelete = reader.getListIndexInput(recipeNames, "Which recipe should be deleted?");
 
-            for (Recipe recipe : recipes) {
-                System.out.printf("%d) %s\n", counter, recipe.getName());
-                counter += 1;
-            }
-
-            while (true) {
-                int indexToDelete = reader.getIntegerInput("Which recipe should be deleted? (e.g. 1):") - 1;
-
-                if (indexToDelete > recipes.size() - 1) {
-                    Colour.println(Colour.RED, "Not a valid index");
-                    continue;
-                }
-
+            if(indexToDelete != null) {
                 Recipe recipeToDelete = recipes.get(indexToDelete);
 
                 recipeManager.deleteRecipe(recipeToDelete);
                 System.out.printf("Deleted %s\n", recipeToDelete.getName());
-                break;
             }
         }
     }
