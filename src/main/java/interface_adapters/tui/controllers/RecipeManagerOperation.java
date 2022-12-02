@@ -195,7 +195,7 @@ public class RecipeManagerOperation implements TextualOperation {
 
             Integer indexToDelete = reader.getListIndexInput(recipeNames, "Which recipe should be deleted?");
 
-            if(indexToDelete != null) {
+            if (indexToDelete != null) {
                 Recipe recipeToDelete = recipes.get(indexToDelete);
 
                 recipeManager.deleteRecipe(recipeToDelete);

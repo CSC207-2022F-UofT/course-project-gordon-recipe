@@ -131,7 +131,7 @@ public class TextualReader {
      * @param choices the map of choices the user can select from.
      *                Keys should be able to be easily typed by the user.
      *                Values are descriptions of choices, and can be empty strings.
-     * @param header the header that precedes the map of choices.
+     * @param header  the header that precedes the map of choices.
      * @return the key of the choice the user selected, or null if the user decided to exit.
      */
     @SuppressWarnings("unused")
@@ -172,12 +172,12 @@ public class TextualReader {
      * Prompts the user to select from a list of options, and returns the index of their choice.
      * Uses 1-indexing when communicating with the user but converts to 0-indexing for internal use.
      *
-     * @param list the list of choices the user can select from
+     * @param list   the list of choices the user can select from
      * @param header the header that precedes the list of choices
      * @return the index of the choice the user selected, or null if the user decided to exit
      */
-    public Integer getListIndexInput(List<String> list, String header){
-        while(true){
+    public Integer getListIndexInput(List<String> list, String header) {
+        while (true) {
             Colour.printHeader(header);
             int counter = 1;
             for (String choice : list) {
@@ -194,11 +194,11 @@ public class TextualReader {
                 return null;
             }
 
-            try{
+            try {
                 int index = Integer.parseInt(input) - 1;
-                if(0 <= index && index < list.size()){
+                if (0 <= index && index < list.size()) {
                     return index;
-                }else{
+                } else {
                     System.out.printf("%s%s is not a valid index, try again.%s\n", Colour.RED, input, Colour.RESET);
                 }
             } catch (NumberFormatException e) {
