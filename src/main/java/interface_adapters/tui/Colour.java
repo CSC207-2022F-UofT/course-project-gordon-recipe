@@ -8,13 +8,13 @@ package interface_adapters.tui;
 @SuppressWarnings("unused")
 public class Colour {
     /**
-     * Prints a given string in the given color.
+     * Prints a given string in the given colour.
      *
-     * @param color   the color to print in
+     * @param colour   the colour to print in
      * @param message the message to print
      */
-    public static void println(String color, String message) {
-        System.out.println(color + message + RESET);
+    public static void println(String colour, String message) {
+        System.out.println(colour + message + RESET);
     }
 
     /**
