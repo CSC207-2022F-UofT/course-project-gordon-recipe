@@ -1,7 +1,10 @@
 package interface_adapters.tui;
 
+import com.j256.ormlite.logger.Level;
+import com.j256.ormlite.logger.Logger;
 import database.Database;
 import database.InMemoryDatabase;
+import database.LocalDatabase;
 import interface_adapters.tui.controllers.RecipeManagerOperation;
 import usecase.RecipeManager;
 
@@ -16,8 +19,19 @@ public class MainController {
     static TextualReader reader = new TextualReader(scanner);
 
     public static void main(String[] args) throws Exception {
-        Database database = new InMemoryDatabase();
+        // Silence Ormlite logging
+        Logger.setGlobalLogLevel(Level.FATAL);
 
+        // Initialize the database
+        Database database;
+
+        if (args.length > 1 && args[0].equals("--database") && args[1].equals("local")) {
+            database = new LocalDatabase();
+        } else {
+            database = new InMemoryDatabase();
+        }
+
+        // Set up operations and run them
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database))
         );
@@ -25,6 +39,7 @@ public class MainController {
         Colour.println(Colour.GREEN_BOLD, "Welcome to the Recipe Manager!");
         reader.chooseOperation(operations, "Home");
 
+        // Shutdown
         scanner.close();
         Colour.println(Colour.GREEN_BOLD, "Have a nice day");
     }
