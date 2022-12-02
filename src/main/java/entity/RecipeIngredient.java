@@ -44,4 +44,8 @@ public class RecipeIngredient implements Serializable, RecipePreparation {
     public String getQuantity() {
         return quantity;
     }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
 }
