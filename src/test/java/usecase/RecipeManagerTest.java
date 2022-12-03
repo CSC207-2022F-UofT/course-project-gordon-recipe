@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import database.Database;
 import database.InMemoryDatabase;
 import entity.Recipe;
+import entity.Tool;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +13,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class RecipeManagerTest {
+    private Database database;
     private RecipeManager manager;
     private Dao<Recipe, String> recipes;
 
     @BeforeEach
     public void Setup() throws SQLException {
-        Database database = new InMemoryDatabase();
+        database = new InMemoryDatabase();
         manager = new RecipeManager(database);
         recipes = database.getDao(Recipe.class);
     }
@@ -70,5 +72,23 @@ public class RecipeManagerTest {
         List<Recipe> retrievedRecipes = manager.getAllRecipes();
 
         Assertions.assertTrue(retrievedRecipes.containsAll(recipesList));
+    }
+
+    @Test
+    public void GetRecipeToolsTest() throws SQLException {
+        List<Tool> tools = List.of(
+                new Tool("Spatula"),
+                new Tool("Knife")
+        );
+
+        Dao<Tool, String> toolsDao = database.getDao(Tool.class);
+        toolsDao.create(tools);
+
+        Recipe pie = new Recipe("Pie", 10, 10);
+        recipes.create(pie);
+
+        manager.createRecipeTools(pie, tools);
+
+        Assertions.assertEquals(2, manager.getTools(pie).size());
     }
 }

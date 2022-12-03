@@ -7,6 +7,8 @@ import entity.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * RecipeManager is a use-case for managing recipes
@@ -128,29 +130,12 @@ public class RecipeManager {
         Dao<RecipeIngredient, Integer> recipeIngredientsDao = database.getDao(RecipeIngredient.class);
 
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
-            recipeIngredients.add(recipeIngredient);
-
             try {
                 ingredientsDao.createIfNotExists(recipeIngredient.getIngredient());
                 recipeIngredientsDao.createIfNotExists(recipeIngredient);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    /**
-     * Creates and stores notes.
-     *
-     * @param notes The notes to save
-     */
-    public void createRecipeNotes(List<Note> notes) {
-        Dao<Note, String> notesDao = database.getDao(Note.class);
-
-        try {
-            notesDao.create(notes);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -182,5 +167,68 @@ public class RecipeManager {
         }
 
         return recipeList;
+    }
+
+    /**
+     * Returns a list of tools in the given recipe.
+     *
+     * @return the tools
+     */
+    public List<Tool> getTools(Recipe recipe) {
+        Dao<RecipeTool, Integer> recipeToolsDao = database.getDao(RecipeTool.class);
+
+        try {
+            Stream<RecipeTool> recipeTools = recipeToolsDao.query(
+                    recipeToolsDao.queryBuilder()
+                            .orderBy("tool_id", true)
+                            .where().eq("recipe_id", recipe.getID())
+                            .prepare()
+            ).stream();
+
+            return recipeTools.map(RecipeTool::getTool).collect(Collectors.toList());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Returns a list of recipe ingredients in the given recipe.
+     *
+     * @return the recipe ingredients
+     */
+    public List<RecipeIngredient> getRecipeIngredients(Recipe recipe) {
+        Dao<RecipeIngredient, Integer> recipeIngredientsDao = database.getDao(RecipeIngredient.class);
+
+        try {
+            return recipeIngredientsDao.query(
+                    recipeIngredientsDao.queryBuilder()
+                            .orderBy("ingredient_id", true)
+                            .where().eq("recipe_id", recipe.getID())
+                            .prepare()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Returns a recipe's steps
+     *
+     * @param recipe the recipe to get the steps for
+     * @return the steps of the recipe
+     */
+    public List<Step> getSteps(Recipe recipe) {
+        Dao<Step, String> steps = database.getDao(Step.class);
+
+        try {
+            return steps.query(
+                    steps.queryBuilder()
+                            .orderBy("number", true)
+                            .where().eq("recipe_id", recipe.getID())
+                            .prepare()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
