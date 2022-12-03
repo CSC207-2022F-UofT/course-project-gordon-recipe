@@ -102,5 +102,34 @@ public class RecipeRecommender {
         Collections.shuffle(topThird);
         return topThird.get(0);
     }
+
+    /**
+     * A specific recommendation algorithm that will select a liked recipe at random, or choose a random recipe
+     * if no recipes have been liked
+     *
+     * @param recipeList the exhaustive list of recipes
+     * @return a recommended recipe
+     */
+    private Recipe recommendationTypeB(List<Recipe> recipeList) {
+        // make list of liked recipes
+        ArrayList<Recipe> previouslyLiked = new ArrayList<>();
+        for (Recipe recipe : recipeList) {
+            if (recipe.getThumbsUp() == true) {
+                previouslyLiked.add(recipe);
+            }
+        }
+
+        // if size is zero, just recommend a random recipe
+        if (previouslyLiked.size() == 0) {
+            Collections.shuffle(recipeList);
+            return recipeList.get(0);
+        }
+
+        // else, choose a random liked recipe
+        Collections.shuffle(previouslyLiked);
+        return previouslyLiked.get(0);
+
+    }
+
 }
 

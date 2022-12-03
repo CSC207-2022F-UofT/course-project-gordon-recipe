@@ -61,9 +61,7 @@ public class RecipeManagerOperation implements TextualOperation {
         }
 
         @Override
-        public String getDescription() {
-            return "Create a new recipe";
-        }
+        public String getDescription() { return "Create a new recipe"; }
 
         @Override
         public void run() {
