@@ -17,10 +17,11 @@ public class TextualReader {
      * Returns an input string from the user.
      *
      * @param prompt the prompt to be shown to the user
+     * @param args   the optional args for formatting the prompt
      * @return the user's response
      */
-    public String getInput(String prompt) {
-        System.out.printf("%s ", prompt);
+    public String getInput(String prompt, Object... args) {
+        System.out.printf(prompt + " ", args);
 
         return scanner.nextLine();
     }
@@ -29,11 +30,12 @@ public class TextualReader {
      * Returns an input integer from the user.
      *
      * @param prompt the prompt to be shown to the user
+     * @param args   the optional args to format the prompt with
      * @return The integer the user entered
      */
-    public Integer getIntegerInput(String prompt) {
+    public Integer getIntegerInput(String prompt, Object... args) {
         while (true) {
-            System.out.printf("%s ", prompt);
+            System.out.printf(prompt + " ", args);
 
             String input = "";
 
@@ -42,9 +44,9 @@ public class TextualReader {
                 scanner.nextLine();
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.printf("%s%s doesn't look like a number, try again.%s\n", Colour.RED, input, Colour.RESET);
+                Colour.error("%s doesn't look like a number, try again", input);
             } catch (Exception e) {
-                System.out.println("Couldn't receive your input, try again.");
+                Colour.error("Couldn't receive your input, try again.");
             }
         }
     }
@@ -56,17 +58,15 @@ public class TextualReader {
      * @return a list of the user's inputs
      */
     public List<String> getList(String item) {
-        int count = 0;
+        int count = 1;
 
         List<String> items = new ArrayList<>();
 
         Colour.printHeader("List Input");
-        System.out.printf("Type '%sexit%s' to quit.\n\n", Colour.YELLOW_BOLD, Colour.RESET);
+        System.out.printf("Type %s to quit.\n\n", Colour.example("exit"));
 
         while (true) {
-            System.out.printf("%s %d: ", item, count);
-
-            String input = scanner.nextLine();
+            String input = getInput("%s %d:", item, count);
 
             if (input.equals("exit")) {
                 break;
@@ -87,23 +87,22 @@ public class TextualReader {
      * @param header     the header for the list of operations
      */
     public void chooseOperation(List<TextualOperation> operations, String header) {
+        if (operations.size() < 1) {
+            Colour.info("There are no operations to perform.");
+            return;
+        }
+
         while (true) {
             Colour.printHeader(header);
 
             for (TextualOperation operation : operations) {
-                if (Objects.equals(operation.getDescription(), "")) {
-                    Colour.println(Colour.YELLOW_BOLD, operation.getCode());
-                } else {
-                    System.out.printf(Colour.YELLOW_BOLD + "%s:" + Colour.YELLOW + " %s\n" + Colour.RESET, operation.getCode(), operation.getDescription());
-                }
+                System.out.printf(Colour.YELLOW_BOLD + "%s" + Colour.RESET + ": %s\n", operation.getCode(), operation.getDescription());
             }
 
+            System.out.printf("\nSelect a choice by its key, or type %s to quit:\n", Colour.example("exit"));
+
             String exampleChoice = operations.get(0).getCode();
-
-            System.out.printf("\nSelect a choice by its key, or type '%sexit%s' to quit:\n", Colour.YELLOW_BOLD, Colour.RESET);
-            System.out.printf("Code (e.g. %s%s%s): ", Colour.YELLOW_BOLD, exampleChoice, Colour.RESET);
-
-            String choice = scanner.nextLine();
+            String choice = getInput("Code (e.g. %s):", Colour.example(exampleChoice));
 
             if (Objects.equals(choice, "exit")) {
                 return;
@@ -119,52 +118,24 @@ public class TextualReader {
             if (matching_operations.size() > 0) {
                 matching_operations.get(0).run();
             } else {
-                System.out.printf("\nHmm, %s%s%s doesn't seem to be a choice.\n\n", Colour.YELLOW_BOLD, choice, Colour.RESET);
+                Colour.error("Hmm, %s%s%s doesn't seem to be a choice.", Colour.YELLOW_BOLD, choice, Colour.RED);
             }
         }
     }
 
     /**
-     * Prompts the user to select from a map of options, and returns the key of their choice.
+     * Prompts the user to select from a list of objects, and returns their selection.
      *
-     * @param choices the map of choices the user can select from.
-     *                Keys should be able to be easily typed by the user.
-     *                Values are descriptions of choices, and can be empty strings.
-     * @param header  the header that precedes the map of choices.
-     * @return the key of the choice the user selected, or null if the user decided to exit.
+     * @param items the list of items to show the user
+     * @param header the header of the list of items
+     * @return the item chosen
+     * @param <T> the type of the item
      */
-    @SuppressWarnings("unused")
-    public String promptFromMap(Map<String, String> choices, String header) {
-        while (true) {
-            Colour.printHeader(header);
-            for (Map.Entry<String, String> choice : choices.entrySet()) {
-                String description = choice.getValue();
-                String key = choice.getKey();
+    public <T> T chooseFromList(List<T> items, String header) {
+        List<String> descriptions = items.stream().map(T::toString).collect(Collectors.toList());
+        Integer index = getListIndexInput(descriptions, header);
 
-                if (Objects.equals(description, "")) {
-                    Colour.println(Colour.YELLOW_BOLD, key);
-                } else {
-                    System.out.printf(Colour.YELLOW_BOLD + "%s:" + Colour.YELLOW + " %s\n" + Colour.RESET, key, description);
-                }
-            }
-
-            String exampleChoice = (String) choices.keySet().toArray()[0];
-
-            System.out.printf("\nSelect a choice by its key, or type '%sexit%s' to quit:\n", Colour.YELLOW_BOLD, Colour.RESET);
-            System.out.printf("Code (e.g. %s%s%s): ", Colour.YELLOW_BOLD, exampleChoice, Colour.RESET);
-
-            String choice = scanner.nextLine();
-
-            if (Objects.equals(choice, "exit")) {
-                return null;
-            }
-
-            if (choices.containsKey(choice)) {
-                return choice;
-            } else {
-                System.out.printf("\nHmm, %s%s%s doesn't seem to be a choice.\n\n", Colour.YELLOW_BOLD, choice, Colour.RESET);
-            }
-        }
+        return items.get(index);
     }
 
     /**
@@ -178,14 +149,16 @@ public class TextualReader {
     public Integer getListIndexInput(List<String> list, String header) {
         while (true) {
             Colour.printHeader(header);
+
             int counter = 1;
+
             for (String choice : list) {
-                System.out.printf("%d) %s\n", counter, choice);
+                System.out.printf("%s) %s\n", Colour.example(String.valueOf(counter)), choice);
                 counter += 1;
             }
 
-            System.out.printf("\nSelect a choice by its index, or type '%sexit%s' to quit:\n", Colour.YELLOW_BOLD, Colour.RESET);
-            System.out.print("Index: ");
+            System.out.printf("\nSelect a choice by its index, or type %s to quit:\n", Colour.example("exit"));
+            System.out.printf("Index (e.g. %s): ", Colour.example("1"));
 
             String input = scanner.nextLine();
 
@@ -195,15 +168,15 @@ public class TextualReader {
 
             try {
                 int index = Integer.parseInt(input) - 1;
-                if (0 <= index && index < list.size()) {
+                if (index >= 0 && index < list.size()) {
                     return index;
                 } else {
-                    System.out.printf("%s%s is not a valid index, try again.%s\n", Colour.RED, input, Colour.RESET);
+                    Colour.error("%s is not a valid index, try again.", input);
                 }
             } catch (NumberFormatException e) {
-                System.out.printf("%s%s doesn't look like a number, try again.%s\n", Colour.RED, input, Colour.RESET);
+                Colour.error("%s doesn't look like a number, try again.", input);
             } catch (Exception e) {
-                System.out.println("Couldn't receive your input, try again.");
+                Colour.error("Couldn't receive your input, try again.");
             }
         }
     }
