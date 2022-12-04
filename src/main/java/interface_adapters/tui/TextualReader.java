@@ -138,6 +138,7 @@ public class TextualReader {
         if (index == null) {
             return null;
         }
+
         return items.get(index);
     }
 
