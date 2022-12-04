@@ -126,15 +126,18 @@ public class TextualReader {
     /**
      * Prompts the user to select from a list of objects, and returns their selection.
      *
-     * @param items the list of items to show the user
+     * @param items  the list of items to show the user
      * @param header the header of the list of items
+     * @param <T>    the type of the item
      * @return the item chosen
-     * @param <T> the type of the item
      */
     public <T> T chooseFromList(List<T> items, String header) {
         List<String> descriptions = items.stream().map(T::toString).collect(Collectors.toList());
         Integer index = getListIndexInput(descriptions, header);
 
+        if (index == null) {
+            return null;
+        }
         return items.get(index);
     }
 
