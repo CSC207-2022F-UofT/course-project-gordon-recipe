@@ -36,11 +36,11 @@ public class MainController {
                 new RecipeManagerOperation(reader, new RecipeManager(database))
         );
 
-        Colour.println(Colour.GREEN_BOLD, "Welcome to the Recipe Manager!");
+        Colour.info("Welcome to the Recipe Manager!");
         reader.chooseOperation(operations, "Home");
 
         // Shutdown
         scanner.close();
-        Colour.println(Colour.GREEN_BOLD, "Have a nice day");
+        Colour.info("Have a nice day");
     }
 }

@@ -92,6 +92,11 @@ public class Recipe implements Serializable {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public String getID() {
         return id;
     }

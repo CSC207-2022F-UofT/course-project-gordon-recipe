@@ -10,11 +10,24 @@ public class Colour {
     /**
      * Prints a given string in the given colour.
      *
-     * @param colour   the colour to print in
+     * @param colour  the colour to print in
+     * @param args    the optional arguments for the string formatting
      * @param message the message to print
      */
-    public static void println(String colour, String message) {
-        System.out.println(colour + message + RESET);
+    public static void println(String colour, String message, Object... args) {
+        System.out.println(colour + String.format(message, args) + RESET);
+    }
+
+    /**
+     * Returns a coloured message.
+     *
+     * @param colour  the colour of the message
+     * @param message the message to colour
+     * @param args    the optional arguments for the string formatting
+     * @return the coloured message
+     */
+    public static String colour(String colour, String message, Object... args) {
+        return colour + String.format(message, args) + RESET;
     }
 
     /**
@@ -23,8 +36,45 @@ public class Colour {
      * @param header the header to print
      */
     public static void printHeader(String header) {
-        System.out.printf("%s\n== %s%s%s ==\n", "\033[2J", BLUE_UNDERLINED, header, RESET);
+        System.out.printf("\n%s== %s ==%s\n", BLUE_BOLD, header, RESET);
     }
+
+    /**
+     * Prints an informative message from the system to the user.
+     * Use this method to tell the user something has happened, e.g. "Added 10 ingredients"
+     *
+     * @param message the message to show the user
+     * @param args    optional arguments for string formatting the message
+     */
+    public static void info(String message, Object... args) {
+        println(GREEN, String.format(messageMarker + message, args));
+    }
+
+    /**
+     * Prints an error message from the system to the user.
+     * Use this method to tell the user something has gone wrong, e.g. "Invalid input"
+     *
+     * @param error the error to show the user
+     * @param args  optional arguments for string formatting the message
+     */
+    public static void error(String error, Object... args) {
+        println(RED, String.format(messageMarker + error, args));
+    }
+
+    /**
+     * Returns a yellow example string for displaying to the user.
+     *
+     * @param example the example string, e.g. "exit"
+     * @return the coloured example string
+     */
+    public static String example(String example) {
+        return colour(YELLOW_BOLD, example);
+    }
+
+    /**
+     * Marker used for info and error messages shown to the user.
+     */
+    private static final String messageMarker = "\u2503 ";
 
     public static final String RESET = "\033[0m";
 
