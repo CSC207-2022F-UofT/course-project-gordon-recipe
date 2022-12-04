@@ -135,6 +135,10 @@ public class TextualReader {
         List<String> descriptions = items.stream().map(T::toString).collect(Collectors.toList());
         Integer index = getListIndexInput(descriptions, header);
 
+        if (index == null) {
+            return null;
+        }
+
         return items.get(index);
     }
 
