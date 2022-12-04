@@ -1,6 +1,5 @@
 package interface_adapters.tui.controllers;
 
-import database.Database;
 import entity.Recipe;
 import entity.RecipeData;
 import interface_adapters.tui.Colour;
@@ -26,10 +25,10 @@ public class RecipeTransferOperation implements TextualOperation {
             new RecipeExporter()
     );
 
-    public RecipeTransferOperation(TextualReader reader, Database database) {
+    public RecipeTransferOperation(TextualReader reader, RecipeDataConverter converter, RecipeManager recipeManager) {
         this.reader = reader;
-        this.converter = new RecipeDataConverter(database);
-        this.recipeManager = new RecipeManager(database);
+        this.converter = converter;
+        this.recipeManager = recipeManager;
     }
 
     @Override
@@ -67,12 +66,23 @@ public class RecipeTransferOperation implements TextualOperation {
             }
             RecipeData recipeData = converter.exportRecipe(recipe);
 
+            System.out.println("Choose the location to save the exported file.");
+            Colour.info("Note: the file dialog may have opened behind other windows.");
             JFileChooser fc = new JFileChooser();
             forceDialogFocus();
             if (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
                 return;
             }
             File file = fc.getSelectedFile();
+
+            if (file.exists()) {
+                Colour.info("%s already exists, overwrite?", file.getName());
+                String userChoice = reader.getInput(
+                        "Type %s to overwrite, anything else to cancel:", Colour.example("overwrite"));
+                if (!userChoice.equals("overwrite")) {
+                    return;
+                }
+            }
 
             try {
                 FileOutputStream f = new FileOutputStream(file);
@@ -101,6 +111,8 @@ public class RecipeTransferOperation implements TextualOperation {
 
         @Override
         public void run() {
+            System.out.println("Choose the file to import from.");
+            Colour.info("Note: the file dialog may have opened behind other windows.");
             JFileChooser fc = new JFileChooser();
             forceDialogFocus();
             if (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
@@ -130,7 +142,7 @@ public class RecipeTransferOperation implements TextualOperation {
      * to get to without Alt+Tab. Code derived from
      * <a href="https://stackoverflow.com/a/7536734">this StackOverflow answer</a>.
      */
-    private void forceDialogFocus(){
+    private void forceDialogFocus() {
         JFrame frame = new JFrame();
         frame.setVisible(true);
         frame.setExtendedState(JFrame.ICONIFIED);
