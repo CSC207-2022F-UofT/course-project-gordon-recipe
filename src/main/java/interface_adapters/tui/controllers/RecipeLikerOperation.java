@@ -1,33 +1,28 @@
 package interface_adapters.tui.controllers;
 
 import entity.Recipe;
+import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
 import usecase.RecipeLiker;
-import usecase.RecipeManager;
 
 import java.util.List;
 
 public class RecipeLikerOperation implements TextualOperation {
-    private Recipe recipe;
     private final RecipeLiker recipeLiker;
     private final TextualReader reader;
-    private final RecipeManager recipeManager;
 
     private final List<TextualOperation> operations = List.of(
-            new Liker(),
-            new Unlike(),
-            new GetLiked(),
-            new GetUnliked()
+            new LikeAdder(),
+            new UnlikeAdder(),
+            new ShowLiked(),
+            new ShowUnliked()
     );
 
-
-    public RecipeLikerOperation(TextualReader reader, RecipeLiker recipeLiker, RecipeManager recipeManager) {
+    public RecipeLikerOperation(TextualReader reader, RecipeLiker recipeLiker) {
         this.recipeLiker = recipeLiker;
         this.reader = reader;
-        this.recipeManager = recipeManager;
     }
-
 
     @Override
     public String getCode() {
@@ -36,91 +31,115 @@ public class RecipeLikerOperation implements TextualOperation {
 
     @Override
     public String getDescription() {
-        return "Like or Unlike the recipe";
+        return "Manage liked recipes";
     }
 
     @Override
     public void run() {
-        while (true) {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
-            this.recipe = reader.chooseFromList(recipes, "Like or Unlike Recipe");
-
-            if (this.recipe == null) {
-                break;
-            }
-        }
         reader.chooseOperation(operations, "Recipe Liker");
     }
 
-    private class Liker implements TextualOperation{
+    private class LikeAdder implements TextualOperation {
 
         @Override
         public String getCode() {
-            return "like recipe";
+            return "like";
         }
 
         @Override
         public String getDescription() {
-            return "Like This Recipe";
+            return "Like recipes";
         }
 
         @Override
         public void run() {
-            recipeLiker.likeRecipe(recipe);
+            while (true) {
+                List<Recipe> recipes = recipeLiker.getUnlikedRecipes();
+                Recipe recipe = reader.chooseFromList(recipes, "Recipe to Like");
+
+                if (recipe == null) {
+                    break;
+                }
+
+                recipeLiker.likeRecipe(recipe);
+                Colour.info("Liked %s", recipe.getName());
+            }
         }
     }
 
-    private class Unlike implements  TextualOperation{
+    private class UnlikeAdder implements TextualOperation {
 
         @Override
         public String getCode() {
-            return "unlike recipe";
+            return "unlike";
         }
 
         @Override
         public String getDescription() {
-            return "Unlike This Recipe";
+            return "Unlike recipes";
         }
 
         @Override
         public void run() {
-            recipeLiker.unlikeRecipe(recipe);
+            while (true) {
+                List<Recipe> recipes = recipeLiker.getLikedRecipes();
+                Recipe recipe = reader.chooseFromList(recipes, "Recipe to Unlike");
 
+                if (recipe == null) {
+                    break;
+                }
+
+                recipeLiker.unlikeRecipe(recipe);
+                Colour.info("Unliked %s", recipe.getName());
+            }
         }
     }
 
-    private class GetLiked implements TextualOperation{
+    private class ShowLiked implements TextualOperation {
 
         @Override
         public String getCode() {
-            return "get liked recipe";
+            return "show liked";
         }
 
         @Override
         public String getDescription() {
-            return "Get Liked Recipe";
+            return "Show liked recipes";
         }
+
         @Override
         public void run() {
-            recipeLiker.getLikedRecipes();
+            Colour.section("Liked Recipes");
+
+            List<Recipe> likes = recipeLiker.getLikedRecipes();
+
+            for (Recipe recipe : likes) {
+                System.out.println(recipe.getName());
+            }
         }
     }
-    private class GetUnliked implements TextualOperation{
+
+    private class ShowUnliked implements TextualOperation {
 
         @Override
         public String getCode() {
-            return "get unliked recipe";
+            return "show unliked";
         }
 
         @Override
         public String getDescription() {
-            return "Get Unliked Recipe";
+            return "Show unliked Recipe";
         }
 
         @Override
         public void run() {
-            recipeLiker.getUnlikedRecipes();
+            Colour.section("Unliked Recipes");
 
+            List<Recipe> likes = recipeLiker.getUnlikedRecipes();
+
+            for (Recipe recipe : likes) {
+                System.out.println(recipe.getName());
+            }
         }
     }
 }

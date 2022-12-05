@@ -39,7 +39,7 @@ public class MainController {
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
                 new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
-                new RecipeLikerOperation(reader, new RecipeLiker(database), new RecipeManager(database))
+                new RecipeLikerOperation(reader, new RecipeLiker(database))
         );
 
         Colour.info("Welcome to the Recipe Manager!");
