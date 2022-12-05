@@ -1,5 +1,8 @@
 package interface_adapters.tui;
 
+import entity.Recipe;
+import usecase.RecipeManager;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -184,4 +187,5 @@ public class TextualReader {
             }
         }
     }
+
 }

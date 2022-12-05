@@ -73,6 +73,6 @@ public class ChefModeTest {
         Assertions.assertEquals("There are no more steps!", chefMode.showNextStep());
         chefMode.showPreviousStep();
         Assertions.assertEquals("Put the eggs in a bowl", chefMode.showPreviousStep());
-        Assertions.assertEquals("There is no previous step!", chefMode.showPreviousStep());
+        Assertions.assertNull(chefMode.showPreviousStep());
     }
 }

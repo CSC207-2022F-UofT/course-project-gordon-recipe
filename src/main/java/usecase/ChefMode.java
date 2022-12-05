@@ -21,7 +21,8 @@ public class ChefMode {
     /**
      * The list of ingredients in the recipe.
      */
-    private final List<RecipeIngredient> ingredients;
+    private List<RecipeIngredient> ingredients;
+
 
     /**
      * The number of the current step.
@@ -31,7 +32,7 @@ public class ChefMode {
     /**
      * Initializes the chef mode use-case.
      *
-     * @param recipe   the recipe to perform chef mode on
+     * @param recipe   the current recipe on chef mode
      * @param database the database to retrieve steps and ingredients from
      */
     public ChefMode(Recipe recipe, Database database) {
