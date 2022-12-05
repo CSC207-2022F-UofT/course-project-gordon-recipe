@@ -207,5 +207,4 @@ public class RecipeSearcherTest {
         Assertions.assertEquals(expected, returnRecipe);
     }
 
-
 }

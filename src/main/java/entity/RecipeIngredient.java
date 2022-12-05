@@ -33,6 +33,11 @@ public class RecipeIngredient implements Serializable, RecipePreparation {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s %s", quantity, ingredient.getName());
+    }
+
+    @Override
     public Object getPreparation() {
         return ingredient;
     }
@@ -43,5 +48,9 @@ public class RecipeIngredient implements Serializable, RecipePreparation {
 
     public String getQuantity() {
         return quantity;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
     }
 }
