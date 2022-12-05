@@ -5,13 +5,8 @@ import com.j256.ormlite.logger.Logger;
 import database.Database;
 import database.InMemoryDatabase;
 import database.LocalDatabase;
-import entity.Recipe;
-import interface_adapters.tui.controllers.ChefModeOperation;
-import interface_adapters.tui.controllers.RecipeManagerOperation;
-import interface_adapters.tui.controllers.RecipeTransferOperation;
-import usecase.ChefMode;
-import usecase.RecipeDataConverter;
-import usecase.RecipeManager;
+import interface_adapters.tui.controllers.*;
+import usecase.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -40,6 +35,7 @@ public class MainController {
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
                 new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
+                new RecipeLikerOperation(reader, new RecipeLiker(database)),
                 new ChefModeOperation(reader, new ChefMode(database), new RecipeManager(database))
         );
 
