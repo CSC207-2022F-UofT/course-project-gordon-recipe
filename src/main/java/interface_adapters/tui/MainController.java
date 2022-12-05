@@ -7,10 +7,12 @@ import database.InMemoryDatabase;
 import database.LocalDatabase;
 import interface_adapters.tui.controllers.RecipeLikerOperation;
 import interface_adapters.tui.controllers.RecipeManagerOperation;
+import interface_adapters.tui.controllers.RecipeNoteOperation;
 import interface_adapters.tui.controllers.RecipeTransferOperation;
 import usecase.RecipeDataConverter;
 import usecase.RecipeLiker;
 import usecase.RecipeManager;
+import usecase.RecipeNoteTaker;
 
 import java.util.List;
 import java.util.Scanner;
@@ -39,7 +41,8 @@ public class MainController {
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
                 new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
-                new RecipeLikerOperation(reader, new RecipeLiker(database))
+                new RecipeLikerOperation(reader, new RecipeLiker(database)),
+                new RecipeNoteOperation(reader, new RecipeNoteTaker(database), new RecipeManager(database))
         );
 
         Colour.info("Welcome to the Recipe Manager!");

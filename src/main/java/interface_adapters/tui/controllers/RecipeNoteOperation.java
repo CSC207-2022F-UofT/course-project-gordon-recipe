@@ -39,7 +39,7 @@ public class RecipeNoteOperation implements TextualOperation {
 
     @Override
     public String getDescription() {
-        return "Create, list, edit, and delete note";
+        return "Create, list, edit, and delete notes";
     }
 
     @Override
@@ -61,15 +61,13 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            String title = reader.getInput("Recipe Title:");
-            Integer servings = reader.getIntegerInput("Servings (e.g. 10):");
-            Integer prep_time = reader.getIntegerInput("Minutes of prep time:");
 
-//            List<Recipe> recipes = recipeManager.getAllRecipes();
-//            recipe = reader.chooseFromList(recipes, "Recipe to Add Note");
+            List<Recipe> recipes = recipeManager.getAllRecipes();
+            Recipe recipe = reader.chooseFromList(recipes, "Recipe to Add Note");
 
-            Recipe recipe = new Recipe(title, servings, prep_time);
-
+            if(recipe == null){
+                return;
+            }
 
             String noteText = reader.getInput("Note Text:");
 
@@ -77,8 +75,7 @@ public class RecipeNoteOperation implements TextualOperation {
 
             recipeNoteTaker.createNote(note);
 
-            Colour.info("Created note %s", noteText);
-            reader.chooseOperation(operations, "end");
+            Colour.info("Created note for recipe %s: %s", recipe.getName(), noteText);
         }
 
     }
@@ -147,7 +144,6 @@ public class RecipeNoteOperation implements TextualOperation {
             recipeNoteTaker.updateNote(note);
 
             Colour.info("Edited note %s", noteText);
-            reader.chooseOperation(operations, "end");
 
         }
     }

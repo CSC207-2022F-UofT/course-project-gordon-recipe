@@ -87,7 +87,8 @@ public class Note implements Serializable {
         this.date = date;
     }
 
+    @Override
     public String toString() {
-        return this.getID() + " " + this.date + " " + this.text;
+        return String.format("created %s: %s", date, text);
     }
 }
