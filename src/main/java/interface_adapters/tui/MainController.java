@@ -6,9 +6,11 @@ import database.Database;
 import database.InMemoryDatabase;
 import database.LocalDatabase;
 import interface_adapters.tui.controllers.RecipeManagerOperation;
+import interface_adapters.tui.controllers.RecipeSearcherOperation;
 import interface_adapters.tui.controllers.RecipeTransferOperation;
 import usecase.RecipeDataConverter;
 import usecase.RecipeManager;
+import usecase.RecipeSearcher;
 
 import java.util.List;
 import java.util.Scanner;
@@ -36,7 +38,8 @@ public class MainController {
         // Set up operations and run them
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
-                new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database))
+                new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
+                new RecipeSearcherOperation(reader, new RecipeSearcher(database))
         );
 
         Colour.info("Welcome to the Recipe Manager!");
