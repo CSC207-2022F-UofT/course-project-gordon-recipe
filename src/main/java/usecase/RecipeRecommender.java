@@ -7,6 +7,8 @@ import entity.Recipe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 /**
  * RecipeRecommender is a use-case for recommending recipes
@@ -57,7 +59,14 @@ public class RecipeRecommender {
      * @return a recommended recipe
      */
     private Recipe recommendationAlgorithm(ArrayList<Recipe> recipeList) {
-        return recommendationTypeA(recipeList);
+        int algorithmCount = 2;
+
+        // Generate a random number to select the type of recommendation
+        int algorithmChoice = ThreadLocalRandom.current().nextInt(0, algorithmCount);
+        if (algorithmChoice == 0) {
+            return recommendationTypeA(recipeList);
+        }
+        return recommendationTypeB(recipeList);
     }
 
     /**
@@ -67,7 +76,7 @@ public class RecipeRecommender {
      * @param recipeList an exhaustive list of recipes from the database
      * @return a recommended recipe
      */
-    private Recipe recommendationTypeA(List<Recipe> recipeList) {
+    public Recipe recommendationTypeA(List<Recipe> recipeList) {
         // make list of recipes previously cooked
         ArrayList<Recipe> previouslyMade = new ArrayList<>();
         for (Recipe recipe : recipeList) {
@@ -102,5 +111,34 @@ public class RecipeRecommender {
         Collections.shuffle(topThird);
         return topThird.get(0);
     }
+
+    /**
+     * A specific recommendation algorithm that will select a liked recipe at random, or choose a random recipe
+     * if no recipes have been liked
+     *
+     * @param recipeList the exhaustive list of recipes
+     * @return a recommended recipe
+     */
+    public Recipe recommendationTypeB(List<Recipe> recipeList) {
+        // make list of liked recipes
+        ArrayList<Recipe> previouslyLiked = new ArrayList<>();
+        for (Recipe recipe : recipeList) {
+            if (recipe.getThumbsUp()) {
+                previouslyLiked.add(recipe);
+            }
+        }
+
+        // if size is zero, just recommend a random recipe
+        if (previouslyLiked.size() == 0) {
+            Collections.shuffle(recipeList);
+            return recipeList.get(0);
+        }
+
+        // else, choose a random liked recipe
+        Collections.shuffle(previouslyLiked);
+        return previouslyLiked.get(0);
+
+    }
+
 }
 
