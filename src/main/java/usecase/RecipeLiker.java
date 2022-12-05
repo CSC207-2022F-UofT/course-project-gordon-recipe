@@ -26,7 +26,6 @@ public class RecipeLiker {
         this.recipes = database.getDao(Recipe.class);
     }
 
-
     /**
      * Likes a recipe
      *

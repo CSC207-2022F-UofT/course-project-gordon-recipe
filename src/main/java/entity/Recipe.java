@@ -4,12 +4,13 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import database.LocalDateTimePersister;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "recipes")
-public class Recipe {
+public class Recipe implements Serializable {
     /**
      * The ID of the recipe.
      */
@@ -89,6 +90,11 @@ public class Recipe {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public String getID() {

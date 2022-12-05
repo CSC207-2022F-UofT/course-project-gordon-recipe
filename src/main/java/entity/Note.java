@@ -4,11 +4,12 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import database.LocalDateTimePersister;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "notes")
-public class Note {
+public class Note implements Serializable {
     /**
      * The ID of the note.
      */

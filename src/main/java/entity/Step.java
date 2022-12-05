@@ -3,10 +3,11 @@ package entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "steps")
-public class Step {
+public class Step implements Serializable {
     /**
      * The ID of the step.
      */
