@@ -14,9 +14,19 @@ import java.util.List;
  */
 public class ChefMode {
     /**
+     * The recipe to perform chef mode on.
+     */
+    private Recipe recipe;
+
+    /**
+     * The database to fetch recipes, steps, and ingredients from.
+     */
+    private Database database;
+
+    /**
      * The list of steps.
      */
-    private final List<Step> steps;
+    private List<Step> steps;
 
     /**
      * The list of ingredients in the recipe.
@@ -30,15 +40,33 @@ public class ChefMode {
     private int currentStep;
 
     /**
-     * Initializes the chef mode use-case.
+     * Initializes the chef mode use-case with a recipe.
      *
      * @param recipe   the current recipe on chef mode
      * @param database the database to retrieve steps and ingredients from
      */
     public ChefMode(Recipe recipe, Database database) {
+        this.database = database;
+        setRecipe(recipe);
+    }
+
+    /**
+     * Initializes the chef mode use-case without a recipe.
+     * @param database the database to retrieve steps and ingredients from
+     */
+    public ChefMode(Database database) {
+        this.database = database;
+    }
+
+    /**
+     * Set the chef mode to work on given recipe.
+     * @param recipe  the current recipe on chef mode
+     */
+    public void setRecipe(Recipe recipe) {
         Dao<RecipeIngredient, Integer> recipeIngredients = database.getDao(RecipeIngredient.class);
         Dao<Step, String> steps = database.getDao(Step.class);
 
+        this.recipe = recipe;
         this.currentStep = 0;
 
         try {
@@ -63,7 +91,7 @@ public class ChefMode {
     /**
      * Returns the recipe's ingredients.
      *
-     * @return a string of ingredients and quantity needed in the given recipe
+     * @return a list of ingredients and quantity needed in the given recipe
      */
     public String showIngredients() {
         String ingredientsString = "Ingredients:";
@@ -102,7 +130,7 @@ public class ChefMode {
         this.currentStep += 1;
 
         if (this.currentStep > this.steps.size()) {
-            return "There are no more steps!";
+            return null;
         } else {
             return this.steps.get(currentStep - 1).getText();
         }
@@ -117,11 +145,9 @@ public class ChefMode {
         this.currentStep -= 1;
 
         if (this.currentStep < 1) {
-            return "There is no previous step!";
+            return null;
         } else {
             return this.steps.get(currentStep - 1).getText();
         }
     }
-
-
 }
