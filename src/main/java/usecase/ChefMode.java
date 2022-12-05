@@ -8,20 +8,16 @@ import entity.Step;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Chef mode is a use-case which displays a list of ingredients and steps to the user.
  */
 public class ChefMode {
     /**
-     * The recipe to perform chef mode on.
-     */
-    private Recipe recipe;
-
-    /**
      * The database to fetch recipes, steps, and ingredients from.
      */
-    private Database database;
+    private final Database database;
 
     /**
      * The list of steps.
@@ -32,7 +28,6 @@ public class ChefMode {
      * The list of ingredients in the recipe.
      */
     private List<RecipeIngredient> ingredients;
-
 
     /**
      * The number of the current step.
@@ -52,6 +47,7 @@ public class ChefMode {
 
     /**
      * Initializes the chef mode use-case without a recipe.
+     *
      * @param database the database to retrieve steps and ingredients from
      */
     public ChefMode(Database database) {
@@ -60,13 +56,13 @@ public class ChefMode {
 
     /**
      * Set the chef mode to work on given recipe.
-     * @param recipe  the current recipe on chef mode
+     *
+     * @param recipe the current chef mode recipe
      */
     public void setRecipe(Recipe recipe) {
         Dao<RecipeIngredient, Integer> recipeIngredients = database.getDao(RecipeIngredient.class);
         Dao<Step, String> steps = database.getDao(Step.class);
 
-        this.recipe = recipe;
         this.currentStep = 0;
 
         try {
@@ -91,16 +87,14 @@ public class ChefMode {
     /**
      * Returns the recipe's ingredients.
      *
-     * @return a list of ingredients and quantity needed in the given recipe
+     * @return a list of ingredients and quantities needed in the given recipe
      */
     public String showIngredients() {
-        String ingredientsString = "Ingredients:";
+        String ingredientsList = ingredients.stream()
+                .map(i -> "\n" + i.toString())
+                .collect(Collectors.joining());
 
-        for (RecipeIngredient recipeIngredient : ingredients) {
-            ingredientsString = ingredientsString.concat("\n" +
-                    recipeIngredient.getQuantity() + " " + recipeIngredient.getIngredient().getName());
-        }
-        return ingredientsString;
+        return String.format("Ingredients:%s", ingredientsList);
     }
 
     /**
@@ -124,12 +118,13 @@ public class ChefMode {
     /**
      * Returns the text in the step after the current step.
      *
-     * @return a string of the text in the next ste
+     * @return a string of the text in the next step
      */
     public String showNextStep() {
         this.currentStep += 1;
 
         if (this.currentStep > this.steps.size()) {
+            this.currentStep -= 1;
             return null;
         } else {
             return this.steps.get(currentStep - 1).getText();
@@ -145,6 +140,7 @@ public class ChefMode {
         this.currentStep -= 1;
 
         if (this.currentStep < 1) {
+            this.currentStep += 1;
             return null;
         } else {
             return this.steps.get(currentStep - 1).getText();

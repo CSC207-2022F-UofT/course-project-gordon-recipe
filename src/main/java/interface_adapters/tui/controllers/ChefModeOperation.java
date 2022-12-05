@@ -1,6 +1,7 @@
 package interface_adapters.tui.controllers;
 
 import entity.Recipe;
+import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
 import usecase.ChefMode;
@@ -8,9 +9,7 @@ import usecase.RecipeManager;
 
 import java.util.List;
 
-public class ChefModeOperation implements TextualOperation{
-    private Recipe recipe;
-
+public class ChefModeOperation implements TextualOperation {
     private final ChefMode chefMode;
     private final TextualReader reader;
     private final RecipeManager recipeManager;
@@ -31,12 +30,13 @@ public class ChefModeOperation implements TextualOperation{
     public void run() {
         while (true) {
             List<Recipe> recipes = recipeManager.getAllRecipes();
-            this.recipe = reader.chooseFromList(recipes, "Chef Mode Recipe");
+            Recipe recipe = reader.chooseFromList(recipes, "Chef Mode Recipe");
 
-            if (this.recipe == null) {
+            if (recipe == null) {
                 break;
             }
 
+            chefMode.setRecipe(recipe);
             reader.chooseOperation(operations, "Chef Mode");
         }
     }
@@ -51,7 +51,7 @@ public class ChefModeOperation implements TextualOperation{
         return "chef mode";
     }
 
-    private class IngredientShow implements TextualOperation{
+    private class IngredientShow implements TextualOperation {
 
         @Override
         public String getCode() {
@@ -65,12 +65,11 @@ public class ChefModeOperation implements TextualOperation{
 
         @Override
         public void run() {
-           System.out.printf(chefMode.showIngredients());
+            System.out.printf(chefMode.showIngredients());
         }
     }
 
-
-    private class NextStepShower implements TextualOperation{
+    private class NextStepShower implements TextualOperation {
 
         @Override
         public String getCode() {
@@ -84,11 +83,18 @@ public class ChefModeOperation implements TextualOperation{
 
         @Override
         public void run() {
-            System.out.printf(chefMode.showNextStep());
+            String step = chefMode.showNextStep();
+
+            if (step == null) {
+                Colour.info("There are no more steps!");
+                return;
+            }
+
+            Colour.info(step);
         }
     }
 
-    private class PreviousStepShower implements TextualOperation{
+    private class PreviousStepShower implements TextualOperation {
 
         @Override
         public String getCode() {
@@ -102,8 +108,14 @@ public class ChefModeOperation implements TextualOperation{
 
         @Override
         public void run() {
-            System.out.printf(chefMode.showPreviousStep());
+            String step = chefMode.showPreviousStep();
+
+            if (step == null) {
+                Colour.info("There are no previous steps!");
+                return;
+            }
+
+            Colour.info(step);
         }
     }
-
 }

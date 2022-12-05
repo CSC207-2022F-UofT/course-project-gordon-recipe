@@ -70,11 +70,11 @@ public class ChefModeTest {
 
         Assertions.assertEquals("Put the eggs in a bowl", chefMode.showNextStep());
         Assertions.assertEquals("Put the milk into the bowl", chefMode.showNextStep());
+
         Assertions.assertNull(chefMode.showNextStep());
 
-        chefMode.showPreviousStep();
-
         Assertions.assertEquals("Put the eggs in a bowl", chefMode.showPreviousStep());
+
         Assertions.assertNull(chefMode.showPreviousStep());
     }
 }
