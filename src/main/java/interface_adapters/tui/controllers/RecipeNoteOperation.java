@@ -5,6 +5,7 @@ import entity.Recipe;
 import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
+import usecase.RecipeManager;
 import usecase.RecipeNoteTaker;
 
 import java.util.List;
@@ -13,21 +14,22 @@ import java.util.List;
 /**
  * An operation for running the note taker use-case.
  */
-public class RecipeNoteOperation implements TextualOperation{
+public class RecipeNoteOperation implements TextualOperation {
     private final TextualReader reader;
     private final RecipeNoteTaker recipeNoteTaker;
+    private final RecipeManager recipeManager;
 
     private final List<TextualOperation> operations = List.of(
-            new ChooseRecipe(),
             new NoteCreator(),
             new NoteViewer(),
             new NoteEditor(),
             new NoteDeleter()
     );
 
-    public RecipeNoteOperation(TextualReader reader, RecipeNoteTaker recipeNoteTaker) {
+    public RecipeNoteOperation(TextualReader reader, RecipeNoteTaker recipeNoteTaker, RecipeManager recipeManager) {
         this.reader = reader;
         this.recipeNoteTaker = recipeNoteTaker;
+        this.recipeManager = recipeManager;
     }
 
     @Override
@@ -46,8 +48,6 @@ public class RecipeNoteOperation implements TextualOperation{
     }
 
     private class NoteCreator implements TextualOperation {
-        private Note note;
-        private Recipe recipe;
 
         @Override
         public String getCode() {
@@ -61,13 +61,24 @@ public class RecipeNoteOperation implements TextualOperation{
 
         @Override
         public void run() {
-            String noteTitle = reader.getInput("Note Title:");
-            note = new Note(noteTitle, recipe);
+            String title = reader.getInput("Recipe Title:");
+            Integer servings = reader.getIntegerInput("Servings (e.g. 10):");
+            Integer prep_time = reader.getIntegerInput("Minutes of prep time:");
+
+//            List<Recipe> recipes = recipeManager.getAllRecipes();
+//            recipe = reader.chooseFromList(recipes, "Recipe to Add Note");
+
+            Recipe recipe = new Recipe(title, servings, prep_time);
+
+
+            String noteText = reader.getInput("Note Text:");
+
+            Note note = new Note(noteText, recipe);
 
             recipeNoteTaker.createNote(note);
 
-            Colour.info("Created note %s", noteTitle);
-            reader.chooseOperation(operations, noteTitle);
+            Colour.info("Created note %s", noteText);
+            reader.chooseOperation(operations, "end");
         }
 
     }
@@ -85,19 +96,19 @@ public class RecipeNoteOperation implements TextualOperation{
 
         @Override
         public void run() {
+
             List<Note> notes = recipeNoteTaker.getAllNotes();
 
             Note note = reader.chooseFromList(notes, "All Notes");
 
             if (note != null) {
-                System.out.println(notes);
+                System.out.println(note);
             }
         }
 
     }
 
     private class NoteEditor implements TextualOperation {
-        private Note note;
 
         @Override
         public String getCode() {
@@ -111,14 +122,33 @@ public class RecipeNoteOperation implements TextualOperation{
 
         @Override
         public void run() {
+            //List<Recipe> recipes = recipeManager.getAllRecipes();
+            //Recipe recipe = reader.chooseFromList(recipes, "Recipe to select");
+
             List<Note> notes = recipeNoteTaker.getAllNotes();
-            note = reader.chooseFromList(notes, "Note to Edit");
+            Note note = reader.chooseFromList(notes, "Note to Edit");
 
             if (note == null) {
                 return;
             }
 
-            reader.chooseOperation(operations, "Choose Edit");
+            //reader.chooseOperation(operations, "Choose Edit");
+
+            //String title = reader.getInput("Recipe Title:");
+            //Integer servings = reader.getIntegerInput("Servings (e.g. 10):");
+            //Integer prep_time = reader.getIntegerInput("Minutes of prep time:");
+            //Recipe recipe = new Recipe(title, servings, prep_time);
+
+
+            String noteText = reader.getInput("Note Text:");
+            note.setText(noteText);
+            //note = new Note(noteText, recipe);
+
+            recipeNoteTaker.updateNote(note);
+
+            Colour.info("Edited note %s", noteText);
+            reader.chooseOperation(operations, "end");
+
         }
     }
 
@@ -135,6 +165,9 @@ public class RecipeNoteOperation implements TextualOperation{
 
         @Override
         public void run() {
+            //List<Recipe> recipes = recipeManager.getAllRecipes();
+            //Recipe recipe = reader.chooseFromList(recipes, "Recipe to select");
+
             List<Note> notes = recipeNoteTaker.getAllNotes();
 
             Note note = reader.chooseFromList(notes, "Recipe to Delete");

@@ -86,4 +86,8 @@ public class Note implements Serializable {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    public String toString() {
+        return this.getID() + " " + this.date + " " + this.text;
+    }
 }

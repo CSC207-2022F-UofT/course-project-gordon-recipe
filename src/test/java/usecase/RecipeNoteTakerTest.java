@@ -81,6 +81,9 @@ public class RecipeNoteTakerTest {
 
         Assertions.assertEquals(2, retrievedNotes.size());
 
-        //Assertions.assertEquals("This is note 1"+"This is note 2", retrievedNotes.toString());
+//        Assertions.assertEquals("This is note 1"+"This is note 2", retrievedNotes.toString());
+//        List<String> expected = Arrays.asList("This is note 1", "This is note 2");
+//        Assertions.assertArrayEquals(expected.toArray(), retrievedNotes.toArray());
+
     }
 }
