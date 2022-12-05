@@ -62,7 +62,7 @@ public class TextualReader {
 
         List<String> items = new ArrayList<>();
 
-        Colour.printHeader("List Input");
+        Colour.header("List Input");
         System.out.printf("Type %s to quit.\n\n", Colour.example("exit"));
 
         while (true) {
@@ -93,7 +93,7 @@ public class TextualReader {
         }
 
         while (true) {
-            Colour.printHeader(header);
+            Colour.header(header);
 
             for (TextualOperation operation : operations) {
                 System.out.printf(Colour.YELLOW_BOLD + "%s" + Colour.RESET + ": %s\n", operation.getCode(), operation.getDescription());
@@ -132,6 +132,11 @@ public class TextualReader {
      * @return the item chosen
      */
     public <T> T chooseFromList(List<T> items, String header) {
+        if (items.size() < 1) {
+            Colour.info("There are no options to choose from");
+            return null;
+        }
+
         List<String> descriptions = items.stream().map(T::toString).collect(Collectors.toList());
         Integer index = getListIndexInput(descriptions, header);
 
@@ -152,7 +157,7 @@ public class TextualReader {
      */
     public Integer getListIndexInput(List<String> list, String header) {
         while (true) {
-            Colour.printHeader(header);
+            Colour.header(header);
 
             int counter = 1;
 

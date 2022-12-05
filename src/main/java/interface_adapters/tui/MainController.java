@@ -5,9 +5,11 @@ import com.j256.ormlite.logger.Logger;
 import database.Database;
 import database.InMemoryDatabase;
 import database.LocalDatabase;
+import interface_adapters.tui.controllers.RecipeLikerOperation;
 import interface_adapters.tui.controllers.RecipeManagerOperation;
 import interface_adapters.tui.controllers.RecipeTransferOperation;
 import usecase.RecipeDataConverter;
+import usecase.RecipeLiker;
 import usecase.RecipeManager;
 
 import java.util.List;
@@ -36,7 +38,8 @@ public class MainController {
         // Set up operations and run them
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
-                new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database))
+                new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
+                new RecipeLikerOperation(reader, new RecipeLiker(database))
         );
 
         Colour.info("Welcome to the Recipe Manager!");

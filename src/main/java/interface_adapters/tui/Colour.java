@@ -35,8 +35,18 @@ public class Colour {
      *
      * @param header the header to print
      */
-    public static void printHeader(String header) {
+    public static void header(String header) {
         System.out.printf("\n%s== %s ==%s\n", BLUE_BOLD, header, RESET);
+    }
+
+    /**
+     * Prints a given string as a section, with a standard colour.
+     *
+     * @param section the section to print
+     * @param args    the optional arguments for string formatting the section
+     */
+    public static void section(String section, Object... args) {
+        println(PURPLE_BOLD, String.format("\n" + section, args));
     }
 
     /**
@@ -47,7 +57,7 @@ public class Colour {
      * @param args    optional arguments for string formatting the message
      */
     public static void info(String message, Object... args) {
-        println(GREEN, String.format(messageMarker + message, args));
+        println(GREEN, String.format("\n" + messageMarker + message, args));
     }
 
     /**
@@ -58,7 +68,7 @@ public class Colour {
      * @param args  optional arguments for string formatting the message
      */
     public static void error(String error, Object... args) {
-        println(RED, String.format(messageMarker + error, args));
+        println(RED, String.format("\n" + messageMarker + error, args));
     }
 
     /**
