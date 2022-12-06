@@ -20,6 +20,8 @@ public class RecipeTransferOperation implements TextualOperation {
     private final RecipeDataConverter converter;
     private final RecipeManager recipeManager;
 
+    private final JFileChooser fileChooser = new JFileChooser();
+
     private final List<TextualOperation> operations = List.of(
             new RecipeImporter(),
             new RecipeExporter()
@@ -68,12 +70,11 @@ public class RecipeTransferOperation implements TextualOperation {
 
             System.out.println("Choose the location to save the exported file.");
             Colour.info("Note: the file dialog may have opened behind other windows.");
-            JFileChooser fc = new JFileChooser();
             forceDialogFocus();
-            if (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-            File file = fc.getSelectedFile();
+            File file = fileChooser.getSelectedFile();
 
             if (file.exists()) {
                 Colour.info("%s already exists, overwrite?", file.getName());
@@ -113,12 +114,11 @@ public class RecipeTransferOperation implements TextualOperation {
         public void run() {
             System.out.println("Choose the file to import from.");
             Colour.info("Note: the file dialog may have opened behind other windows.");
-            JFileChooser fc = new JFileChooser();
             forceDialogFocus();
-            if (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-            File file = fc.getSelectedFile();
+            File file = fileChooser.getSelectedFile();
 
             RecipeData recipeData;
             try {

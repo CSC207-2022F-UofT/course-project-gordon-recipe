@@ -13,6 +13,9 @@ public class RecipeSearcher<T extends Preparation> {
     private final Dao<RecipeIngredient, Integer> recipeIngredients;
     private final Dao<RecipeTool, String> recipeTools;
     private final Dao<RecipeTag, String> recipeTags;
+    private final Dao<Ingredient, String> ingredients;
+    private final Dao<Tool, String> tools;
+    private final Dao<Tag, String> tags;
 
 
     public RecipeSearcher(Database database) {
@@ -20,6 +23,9 @@ public class RecipeSearcher<T extends Preparation> {
         this.recipeIngredients = database.getDao(RecipeIngredient.class);
         this.recipeTools = database.getDao(RecipeTool.class);
         this.recipeTags = database.getDao(RecipeTag.class);
+        this.ingredients = database.getDao(Ingredient.class);
+        this.tools = database.getDao(Tool.class);
+        this.tags = database.getDao(Tag.class);
     }
 
     public List<Recipe> searchRecipe(List<T> searchList) {
@@ -39,10 +45,7 @@ public class RecipeSearcher<T extends Preparation> {
 
         }
 
-        List<Recipe> tempRecipe = new ArrayList<>();
-        for (Recipe recipe : returnRecipe) {
-            tempRecipe.add(recipe);
-        }
+        List<Recipe> tempRecipe = new ArrayList<>(returnRecipe);
 
         for (T prep : searchList) {
             for (Recipe recipe : tempRecipe) {
@@ -106,6 +109,34 @@ public class RecipeSearcher<T extends Preparation> {
         }
         return false;
 
+    }
+
+    public T inDatabase(String str, String typ) {
+        switch (typ) {
+            case "Ingredient":
+                for (Ingredient ingredient : ingredients) {
+                    if (ingredient.getName().equals(str)) {
+                        return (T) ingredient;
+                    }
+                }
+                break;
+            case "Tool":
+                for (Tool tool : tools) {
+                    if (tool.getName().equals(str)) {
+                        return (T) tool;
+                    }
+                }
+                break;
+            case "Tag":
+                for (Tag tag : tags) {
+                    if (tag.getName().equals(str)) {
+                        return (T) tag;
+                    }
+                }
+                break;
+        }
+
+        return null;
     }
 
 
