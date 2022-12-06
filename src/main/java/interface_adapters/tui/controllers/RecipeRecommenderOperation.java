@@ -1,6 +1,7 @@
 package interface_adapters.tui.controllers;
 
 import entity.Recipe;
+import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
 import usecase.RecipeRecommender;
@@ -54,7 +55,7 @@ public class RecipeRecommenderOperation implements TextualOperation {
         @Override
         public void run() {
             Recipe suggestion = recipeRecommender.getRecommendation();
-            System.out.printf("We think you'll love %s", suggestion.getName());
+            Colour.info("You should try %s", suggestion.getName());
         }
     }
 
