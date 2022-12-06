@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "notes")
+@SuppressWarnings("unused")
 public class Note implements Serializable {
     /**
      * The ID of the note.

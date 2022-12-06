@@ -47,14 +47,14 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
 
     private void finishSearch(List<T> searchList) {
         List<Recipe> recipes = recipeSearcher.searchRecipe(searchList);
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (Recipe recipe : recipes) {
-            output = output + recipe.getName() + ", ";
+            output.append(recipe.getName()).append(", ");
         }
-        if (output.trim().endsWith(",")) {
-            output = output.substring(0, output.trim().length() - 1);
+        if (output.toString().trim().endsWith(",")) {
+            output = new StringBuilder(output.substring(0, output.toString().trim().length() - 1));
         }
-        Colour.info("Here is the list of recipes: \n%s\n", output);
+        Colour.info("Here is the list of recipes: \n%s\n", output.toString());
     }
 
     private class RecipeSearchIngredientProvider implements TextualOperation {
