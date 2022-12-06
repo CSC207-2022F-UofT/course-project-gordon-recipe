@@ -89,6 +89,6 @@ public class Note implements Serializable {
 
     @Override
     public String toString() {
-        return this.getID() + " " + this.date + " " + this.text;
+        return "Store time: " + this.date + "    Note text:" + this.text;
     }
 }
