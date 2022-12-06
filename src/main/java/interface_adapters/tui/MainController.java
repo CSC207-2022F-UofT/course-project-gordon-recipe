@@ -35,6 +35,7 @@ public class MainController {
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
                 new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
+                new RecipeNoteOperation(reader, new RecipeNoteTaker(database), new RecipeManager(database)),
                 new RecipeSearcherOperation(reader, new RecipeSearcher(database)),
                 new RecipeLikerOperation(reader, new RecipeLiker(database)),
                 new ChefModeOperation(reader, new ChefMode(database), new RecipeManager(database)),
