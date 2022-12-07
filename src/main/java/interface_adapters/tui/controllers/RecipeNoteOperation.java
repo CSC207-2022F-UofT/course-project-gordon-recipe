@@ -104,7 +104,7 @@ public class RecipeNoteOperation implements TextualOperation {
                 List<Note> notes = recipeManager.getNotes(recipe);
 
                 if (notes.size() < 1) {
-                    Colour.info("There are no notes on this recipe");
+                    Colour.info("There are no notes on this recipe.");
                     return;
                 }
 
