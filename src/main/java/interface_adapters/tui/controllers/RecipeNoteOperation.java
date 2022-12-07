@@ -129,7 +129,14 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Note> notes = recipeNoteTaker.getAllNotes();
+            List<Recipe> recipes = recipeManager.getAllRecipes();
+            Recipe recipe = reader.chooseFromList(recipes, "Recipe to Edit Notes On");
+
+            if (recipe == null) {
+                return;
+            }
+
+            List<Note> notes = recipeManager.getNotes(recipe);
             Note note = reader.chooseFromList(notes, "Note to Edit");
 
             if (note == null) {
@@ -158,14 +165,23 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Note> notes = recipeNoteTaker.getAllNotes();
+            List<Recipe> recipes = recipeManager.getAllRecipes();
+            Recipe recipe = reader.chooseFromList(recipes, "Recipe to Delete Notes On");
+
+            if (recipe == null) {
+                return;
+            }
+
+            List<Note> notes = recipeManager.getNotes(recipe);
 
             Note note = reader.chooseFromList(notes, "Note to Delete");
 
-            if (note != null) {
-                recipeNoteTaker.deleteNote(note);
-                Colour.info("Deleted note");
+            if (note == null) {
+                return;
             }
+
+            recipeNoteTaker.deleteNote(note);
+            Colour.info("Deleted note");
         }
     }
 }
