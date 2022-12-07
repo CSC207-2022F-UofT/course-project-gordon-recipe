@@ -231,4 +231,28 @@ public class RecipeManager {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Returns a list of tags in the given recipe.
+     *
+     * @return the tags
+     */
+    public List<Tag> getTags(Recipe recipe) {
+        Dao<RecipeTag, Integer> recipeTagsDao = database.getDao(RecipeTag.class);
+
+        try {
+            Stream<RecipeTag> recipeTags = recipeTagsDao.query(
+                    recipeTagsDao.queryBuilder()
+                            .orderBy("tag_id", true)
+                            .where().eq("recipe_id", recipe.getID())
+                            .prepare()
+            ).stream();
+
+            return recipeTags.map(RecipeTag::getTag).collect(Collectors.toList());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
