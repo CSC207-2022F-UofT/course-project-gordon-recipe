@@ -231,4 +231,25 @@ public class RecipeManager {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Returns a recipe's notes
+     *
+     * @param recipe the recipe to get the notes for
+     * @return the notes of the recipe
+     */
+    public List<Note> getNotes(Recipe recipe) {
+        Dao<Note, String> notes = database.getDao(Note.class);
+
+        try {
+            return notes.query(
+                    notes.queryBuilder()
+                            .orderBy("date", true)
+                            .where().eq("recipe_id", recipe.getID())
+                            .prepare()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -6,6 +6,7 @@ import database.LocalDateTimePersister;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "notes")
@@ -89,6 +90,6 @@ public class Note implements Serializable {
 
     @Override
     public String toString() {
-        return "Store time: " + this.date + "    Note text:" + this.text;
+        return String.format("%s: %s", date.format(DateTimeFormatter.ISO_DATE), text);
     }
 }
