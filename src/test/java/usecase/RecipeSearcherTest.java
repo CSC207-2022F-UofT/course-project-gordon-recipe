@@ -15,9 +15,7 @@ import java.util.List;
 public class RecipeSearcherTest {
 
     private RecipeManager manager;
-    private RecipeSearcher<Ingredient> ingredientSearcher;
-    private RecipeSearcher<Tool> toolSearcher;
-    private RecipeSearcher<Tag> tagSearcher;
+    private RecipeSearcher searcher;
     private Dao<RecipeIngredient, Integer> recipeIngredients;
 
     private Dao<RecipeTool, Integer> recipeTools;
@@ -29,9 +27,7 @@ public class RecipeSearcherTest {
     public void Setup() throws SQLException {
         Database database = new InMemoryDatabase();
         manager = new RecipeManager(database);
-        ingredientSearcher = new RecipeSearcher<>(database);
-        toolSearcher = new RecipeSearcher<>(database);
-        tagSearcher = new RecipeSearcher<>(database);
+        searcher = new RecipeSearcher(database);
         recipeIngredients = database.getDao(RecipeIngredient.class);
         recipeTools = database.getDao(RecipeTool.class);
         recipeTags = database.getDao(RecipeTag.class);
@@ -57,10 +53,10 @@ public class RecipeSearcherTest {
             throw new RuntimeException(e);
         }
 
-        List<Ingredient> ingredientList = new ArrayList<>();
+        List<PreparationItem> ingredientList = new ArrayList<>();
         ingredientList.add(beefSirloin);
 
-        List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
+        List<Recipe> returnRecipe = searcher.searchRecipe(ingredientList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(steak);
 
@@ -86,10 +82,10 @@ public class RecipeSearcherTest {
             throw new RuntimeException(e);
         }
 
-        List<Tool> toolList = new ArrayList<>();
+        List<PreparationItem> toolList = new ArrayList<>();
         toolList.add(pan);
 
-        List<Recipe> returnRecipe = toolSearcher.searchRecipe(toolList);
+        List<Recipe> returnRecipe = searcher.searchRecipe(toolList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(steak);
 
@@ -115,10 +111,10 @@ public class RecipeSearcherTest {
             throw new RuntimeException(e);
         }
 
-        List<Tag> tagList = new ArrayList<>();
+        List<PreparationItem> tagList = new ArrayList<>();
         tagList.add(beef);
 
-        List<Recipe> returnRecipe = tagSearcher.searchRecipe(tagList);
+        List<Recipe> returnRecipe = searcher.searchRecipe(tagList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(steak);
 
@@ -153,10 +149,10 @@ public class RecipeSearcherTest {
             throw new RuntimeException(e);
         }
 
-        List<Ingredient> ingredientList = new ArrayList<>();
+        List<PreparationItem> ingredientList = new ArrayList<>();
         ingredientList.add(tomato);
 
-        List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
+        List<Recipe> returnRecipe = searcher.searchRecipe(ingredientList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(tomatoSpaghetti);
         expected.add(tomatoJuice);
@@ -196,11 +192,11 @@ public class RecipeSearcherTest {
             throw new RuntimeException(e);
         }
 
-        List<Ingredient> ingredientList = new ArrayList<>();
+        List<PreparationItem> ingredientList = new ArrayList<>();
         ingredientList.add(tomato);
         ingredientList.add(pasta);
 
-        List<Recipe> returnRecipe = ingredientSearcher.searchRecipe(ingredientList);
+        List<Recipe> returnRecipe = searcher.searchRecipe(ingredientList);
         List<Recipe> expected = new ArrayList<>();
         expected.add(tomatoSpaghetti);
 

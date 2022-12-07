@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * An operation for running the recipe recommender use-case.
  */
-public class RecipeSearcherOperation<T extends Preparation> implements TextualOperation {
+public class RecipeSearcherOperation implements TextualOperation {
 
     private final TextualReader reader;
-    private final RecipeSearcher<T> recipeSearcher;
+    private final RecipeSearcher recipeSearcher;
 
     private final List<TextualOperation> operations = List.of(
-            new RecipeSearchIngredientProvider(),
-            new RecipeSearchToolProvider(),
-            new RecipeSearchTagProvider()
+            new RecipeIngredientSearcher(),
+            new RecipeToolSearcher(),
+            new RecipeTagSearcher()
     );
 
-    public RecipeSearcherOperation(TextualReader reader, RecipeSearcher<T> recipeSearcher) {
+    public RecipeSearcherOperation(TextualReader reader, RecipeSearcher recipeSearcher) {
         this.reader = reader;
         this.recipeSearcher = recipeSearcher;
 
@@ -45,7 +45,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
         return "recipe searcher";
     }
 
-    private void finishSearch(List<T> searchList) {
+    private void finishSearch(List<PreparationItem> searchList) {
         List<Recipe> recipes = recipeSearcher.searchRecipe(searchList);
         StringBuilder output = new StringBuilder();
         for (Recipe recipe : recipes) {
@@ -57,7 +57,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
         Colour.info("Here is the list of recipes: \n%s\n", output.toString());
     }
 
-    private class RecipeSearchIngredientProvider implements TextualOperation {
+    private class RecipeIngredientSearcher implements TextualOperation {
         @Override
         public String getCode() {
             return "ingredient search";
@@ -70,7 +70,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
 
         @Override
         public void run() {
-            List<T> searchList = new ArrayList<>();
+            List<PreparationItem> searchList = new ArrayList<>();
 
             while (true) {
                 String name = reader.getInput("Ingredient %d (type %s to search):",
@@ -79,16 +79,15 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
                 if (name.equals("start")) {
                     break;
                 } else if (ingredient != null) {
-                    searchList.add((T) ingredient);
+                    searchList.add(ingredient);
                 }
             }
 
             finishSearch(searchList);
         }
-
     }
 
-    private class RecipeSearchToolProvider implements TextualOperation {
+    private class RecipeToolSearcher implements TextualOperation {
         @Override
         public String getCode() {
             return "tool search";
@@ -101,7 +100,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
 
         @Override
         public void run() {
-            List<T> searchList = new ArrayList<>();
+            List<PreparationItem> searchList = new ArrayList<>();
 
             while (true) {
                 String name = reader.getInput("Tool %d (type %s to search):",
@@ -110,7 +109,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
                 if (name.equals("start")) {
                     break;
                 } else if (tool != null) {
-                    searchList.add((T) tool);
+                    searchList.add(tool);
                 }
             }
 
@@ -118,7 +117,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
         }
     }
 
-    private class RecipeSearchTagProvider implements TextualOperation {
+    private class RecipeTagSearcher implements TextualOperation {
         @Override
         public String getCode() {
             return "tag search";
@@ -131,7 +130,7 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
 
         @Override
         public void run() {
-            List<T> searchList = new ArrayList<>();
+            List<PreparationItem> searchList = new ArrayList<>();
 
             while (true) {
                 String name = reader.getInput("Tag %d (type %s to search):",
@@ -140,13 +139,11 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
                 if (name.equals("start")) {
                     break;
                 } else if (tag != null) {
-                    searchList.add((T) tag);
+                    searchList.add(tag);
                 }
             }
 
             finishSearch(searchList);
         }
     }
-
-
 }

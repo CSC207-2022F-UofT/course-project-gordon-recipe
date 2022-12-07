@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @DatabaseTable(tableName = "recipe_tags")
 @SuppressWarnings("unused")
-public class RecipeTag implements Serializable, RecipePreparation {
+public class RecipeTag implements Serializable, RecipePreparationItem {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -33,7 +33,7 @@ public class RecipeTag implements Serializable, RecipePreparation {
     }
 
     @Override
-    public Object getPreparation() {
+    public Tag getPreparation() {
         return tag;
     }
 

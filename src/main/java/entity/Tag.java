@@ -6,7 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "tags")
-public class Tag implements Serializable, Preparation {
+@SuppressWarnings("unused")
+public class Tag implements Serializable, PreparationItem {
     /**
      * The name of the tag.
      */
