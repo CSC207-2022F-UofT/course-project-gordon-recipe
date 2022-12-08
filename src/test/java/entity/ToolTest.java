@@ -61,4 +61,11 @@ public class ToolTest {
         List<Recipe> spatulaRecipes = recipes.query(preparedQuery);
         Assertions.assertEquals(2, spatulaRecipes.size());
     }
+
+    @Test
+    public void SetNameTest() {
+        Tool tool = new Tool("blender");
+        tool.setName("nutribullet");
+        Assertions.assertEquals(tool.getName(), "nutribullet");
+    }
 }

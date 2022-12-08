@@ -3,13 +3,13 @@ package usecase;
 import com.j256.ormlite.dao.Dao;
 import database.Database;
 import database.InMemoryDatabase;
-import entity.Recipe;
-import entity.Tool;
+import entity.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeManagerTest {
@@ -91,4 +91,65 @@ public class RecipeManagerTest {
 
         Assertions.assertEquals(2, manager.getTools(pie).size());
     }
+
+    @Test
+    public void CreateRecipeTagsTest() throws SQLException {
+        Database db = new InMemoryDatabase();
+        RecipeManager manager = new RecipeManager(db);
+        Dao<Recipe, String> recipes = db.getDao(Recipe.class);
+
+        Recipe pie = new Recipe("Pie", 10, 10);
+        recipes.create(pie);
+
+        ArrayList<Tag> tagList = new ArrayList<>();
+        Tag vegan = new Tag("vegan");
+        tagList.add(vegan);
+
+        manager.createRecipeTags(pie, tagList);
+
+        Assertions.assertEquals(manager.getTags(pie), tagList);
+    }
+
+    @Test
+    public void CreateRecipeIngredientsTest() throws SQLException {
+        Database db = new InMemoryDatabase();
+        RecipeManager manager = new RecipeManager(db);
+        Dao<RecipeIngredient, Integer> recipeIngredientsDao = db.getDao(RecipeIngredient.class);
+
+
+        Recipe cake = new Recipe("cake", 3, 3);
+            Ingredient flour = new Ingredient("flour");
+            String quantity1 = "1 cup";
+            RecipeIngredient cakeFlour = new RecipeIngredient(cake, flour, quantity1);
+            recipeIngredientsDao.create(cakeFlour);
+
+        List<RecipeIngredient> ingredientList = new ArrayList<>();
+        ingredientList.add(cakeFlour);
+
+        manager.createRecipeIngredients(ingredientList);
+
+        Assertions.assertEquals(ingredientList.get(0).getRecipe(), manager.getRecipeIngredients(cake).get(0).getRecipe());
+
+    }
+
+    @Test
+    public void CreateRecipeStepsTest() throws SQLException {
+        Database db = new InMemoryDatabase();
+        RecipeManager manager = new RecipeManager(db);
+
+        String text1 = "Add the fruit";
+        int stepNum1 = 1;
+        Recipe smoothie = new Recipe("smoothie", 1, 1);
+        Step step1 = new Step(text1, stepNum1, smoothie);
+
+        List<Step> stepList = new ArrayList<>();
+        stepList.add(step1);
+
+        manager.createRecipeSteps(stepList);
+
+        Assertions.assertEquals(manager.getSteps(smoothie).get(0).getRecipe(), stepList.get(0).getRecipe());
+
+    }
+
+
 }
