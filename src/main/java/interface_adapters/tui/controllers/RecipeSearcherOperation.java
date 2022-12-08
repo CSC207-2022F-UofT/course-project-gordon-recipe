@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * An operation for running the recipe recommender use-case.
+ * An operation for running the recipe searcher use-case.
  */
 public class RecipeSearcherOperation<T extends Preparation> implements TextualOperation {
 
@@ -45,6 +45,13 @@ public class RecipeSearcherOperation<T extends Preparation> implements TextualOp
         return "recipe searcher";
     }
 
+    /**
+     * Takes a list of Preparations and
+     * finishes the operation by calling the recipeSearcher and
+     * printing the recipes given by the searcher.
+     *
+     * @param searchList List of Preparations to search for recipes
+     */
     private void finishSearch(List<T> searchList) {
         List<Recipe> recipes = recipeSearcher.searchRecipe(searchList);
         String output = "";
