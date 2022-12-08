@@ -6,7 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "recipe_tags")
-public class RecipeTag implements Serializable, RecipePreparation {
+@SuppressWarnings("unused")
+public class RecipeTag implements Serializable, RecipePreparationItem {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -21,16 +22,30 @@ public class RecipeTag implements Serializable, RecipePreparation {
         this.tag = tag;
     }
 
+    public RecipeTag(Recipe recipe, Tag tag, int id) {
+        this.recipe = recipe;
+        this.tag = tag;
+        this.id = id;
+    }
+
     public RecipeTag() {
 
     }
 
     @Override
-    public Object getPreparation() {
+    public Tag getPreparation() {
         return tag;
     }
 
     public Tag getTag() {
         return tag;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public int getID() {
+        return id;
     }
 }

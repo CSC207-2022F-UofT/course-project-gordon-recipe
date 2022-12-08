@@ -72,6 +72,7 @@ public class RecipeManager {
      * @param recipe The recipe to attach tags to
      * @param tags   The tags to attach to the recipe
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<RecipeTag> createRecipeTags(Recipe recipe, List<Tag> tags) {
         Dao<Tag, String> tagsDao = database.getDao(Tag.class);
         Dao<RecipeTag, Integer> recipeTagsDao = database.getDao(RecipeTag.class);
@@ -99,6 +100,7 @@ public class RecipeManager {
      * @param recipe The recipe to attach tools to
      * @param tools  The tools to attach to the recipe
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<RecipeTool> createRecipeTools(Recipe recipe, List<Tool> tools) {
         Dao<Tool, String> toolsDao = database.getDao(Tool.class);
         Dao<RecipeTool, Integer> recipeToolsDao = database.getDao(RecipeTool.class);
