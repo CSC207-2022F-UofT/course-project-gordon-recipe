@@ -4,7 +4,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
-import com.j256.ormlite.table.TableUtils;
 import database.Database;
 import database.InMemoryDatabase;
 import org.junit.jupiter.api.Assertions;
@@ -61,5 +60,12 @@ public class ToolTest {
         // Run the query
         List<Recipe> spatulaRecipes = recipes.query(preparedQuery);
         Assertions.assertEquals(2, spatulaRecipes.size());
+    }
+
+    @Test
+    public void SetNameTest() {
+        Tool tool = new Tool("blender");
+        tool.setName("nutribullet");
+        Assertions.assertEquals(tool.getName(), "nutribullet");
     }
 }

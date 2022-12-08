@@ -39,7 +39,7 @@ public class RecipeSearcherTest {
 
 
     @Test
-    public void SearchRecipeTestOneIngredient() throws SQLException {
+    public void SearchRecipeTestOneIngredient() {
         Recipe pie = new Recipe("Pie", 3, 120);
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
@@ -68,7 +68,7 @@ public class RecipeSearcherTest {
     }
 
     @Test
-    public void SearchRecipeTestOneTool() throws SQLException {
+    public void SearchRecipeTestOneTool() {
         Recipe pie = new Recipe("Pie", 3, 120);
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
@@ -97,7 +97,7 @@ public class RecipeSearcherTest {
     }
 
     @Test
-    public void SearchRecipeTestOneTag() throws SQLException {
+    public void SearchRecipeTestOneTag() {
         Recipe pie = new Recipe("Pie", 3, 120);
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
@@ -126,7 +126,7 @@ public class RecipeSearcherTest {
     }
 
     @Test
-    public void SearchRecipeTestManyRecipes() throws SQLException {
+    public void SearchRecipeTestManyRecipes() {
         Recipe pie = new Recipe("Pie", 3, 120);
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
@@ -166,7 +166,7 @@ public class RecipeSearcherTest {
     }
 
     @Test
-    public void SearchRecipeTestManyIngredients() throws SQLException {
+    public void SearchRecipeTestManyIngredients() {
         Recipe pie = new Recipe("Pie", 3, 120);
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
@@ -207,4 +207,13 @@ public class RecipeSearcherTest {
         Assertions.assertEquals(expected, returnRecipe);
     }
 
+    @Test
+    public void InDatabaseTest() throws SQLException {
+        Database db = new InMemoryDatabase();
+        RecipeSearcher rs = new RecipeSearcher(db);
+        Tag tag = new Tag("vegan");
+        Object ans = rs.inDatabase("vegan", "Tag");
+
+        Assertions.assertEquals(ans, null);
+    }
 }
