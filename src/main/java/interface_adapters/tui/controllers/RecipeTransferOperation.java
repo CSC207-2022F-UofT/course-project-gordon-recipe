@@ -6,7 +6,7 @@ import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
 import usecase.RecipeDataConverter;
-import usecase.RecipeManager;
+import interactor.RecipeInteractor;
 
 import javax.swing.*;
 import java.io.*;
@@ -18,7 +18,7 @@ import java.util.List;
 public class RecipeTransferOperation implements TextualOperation {
     private final TextualReader reader;
     private final RecipeDataConverter converter;
-    private final RecipeManager recipeManager;
+    private final RecipeInteractor recipeInteractor;
 
     private final JFileChooser fileChooser = new JFileChooser();
 
@@ -27,10 +27,10 @@ public class RecipeTransferOperation implements TextualOperation {
             new RecipeExporter()
     );
 
-    public RecipeTransferOperation(TextualReader reader, RecipeDataConverter converter, RecipeManager recipeManager) {
+    public RecipeTransferOperation(TextualReader reader, RecipeDataConverter converter, RecipeInteractor recipeInteractor) {
         this.reader = reader;
         this.converter = converter;
-        this.recipeManager = recipeManager;
+        this.recipeInteractor = recipeInteractor;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class RecipeTransferOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
             Recipe recipe = reader.chooseFromList(recipes, "Recipe to Export");
             if (recipe == null) {
                 return;

@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * An operation for running the recipe recommender use-case.
+ * An operation for running the recipe searcher use-case.
  */
 public class RecipeSearcherOperation implements TextualOperation {
 

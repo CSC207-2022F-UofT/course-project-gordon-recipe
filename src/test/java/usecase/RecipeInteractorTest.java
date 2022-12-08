@@ -5,6 +5,7 @@ import database.Database;
 import database.InMemoryDatabase;
 import entity.Recipe;
 import entity.Tool;
+import interactor.RecipeInteractor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,15 +13,16 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.List;
 
-public class RecipeManagerTest {
+@SuppressWarnings("SpellCheckingInspection")
+public class RecipeInteractorTest {
     private Database database;
-    private RecipeManager manager;
+    private RecipeInteractor manager;
     private Dao<Recipe, String> recipes;
 
     @BeforeEach
     public void Setup() throws SQLException {
         database = new InMemoryDatabase();
-        manager = new RecipeManager(database);
+        manager = new RecipeInteractor(database);
         recipes = database.getDao(Recipe.class);
     }
 

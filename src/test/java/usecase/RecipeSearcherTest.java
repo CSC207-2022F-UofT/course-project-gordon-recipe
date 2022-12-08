@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import database.Database;
 import database.InMemoryDatabase;
 import entity.*;
+import interactor.RecipeInteractor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class RecipeSearcherTest {
 
-    private RecipeManager manager;
+    private RecipeInteractor manager;
     private RecipeSearcher searcher;
     private Dao<RecipeIngredient, Integer> recipeIngredients;
 
@@ -26,7 +27,7 @@ public class RecipeSearcherTest {
     @BeforeEach
     public void Setup() throws SQLException {
         Database database = new InMemoryDatabase();
-        manager = new RecipeManager(database);
+        manager = new RecipeInteractor(database);
         searcher = new RecipeSearcher(database);
         recipeIngredients = database.getDao(RecipeIngredient.class);
         recipeTools = database.getDao(RecipeTool.class);

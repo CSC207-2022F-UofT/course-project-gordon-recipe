@@ -5,14 +5,17 @@ import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
 import usecase.ChefMode;
-import usecase.RecipeManager;
+import interactor.RecipeInteractor;
 
 import java.util.List;
 
+/**
+ * An operation for running the chef mode use-case.
+ */
 public class ChefModeOperation implements TextualOperation {
     private final ChefMode chefMode;
     private final TextualReader reader;
-    private final RecipeManager recipeManager;
+    private final RecipeInteractor recipeInteractor;
 
     private final List<TextualOperation> operations = List.of(
             new IngredientShow(),
@@ -20,16 +23,16 @@ public class ChefModeOperation implements TextualOperation {
             new PreviousStepShower()
     );
 
-    public ChefModeOperation(TextualReader reader, ChefMode chefMode, RecipeManager recipeManager) {
+    public ChefModeOperation(TextualReader reader, ChefMode chefMode, RecipeInteractor recipeInteractor) {
         this.reader = reader;
         this.chefMode = chefMode;
-        this.recipeManager = recipeManager;
+        this.recipeInteractor = recipeInteractor;
     }
 
     @Override
     public void run() {
         while (true) {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
             Recipe recipe = reader.chooseFromList(recipes, "Chef Mode Recipe");
 
             if (recipe == null) {
