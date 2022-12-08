@@ -66,7 +66,7 @@ public class RecipeNoteTaker {
      * @return all notes
      */
     public List<Note> getAllNotes() {
-        ArrayList<Note> noteList = new ArrayList<>();
+        List<Note> noteList = new ArrayList<>();
 
         for (Note note : notes) {
             noteList.add(note);
