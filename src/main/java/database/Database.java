@@ -9,7 +9,7 @@ import java.util.HashMap;
  * An abstract class which handles storing DAOs (Database Access Objects).
  */
 public abstract class Database {
-    private final HashMap<Class, Dao<?, ?>> daoHashMap = new HashMap<>();
+    private final HashMap<Class<?>, Dao<?, ?>> daoHashMap = new HashMap<>();
 
     abstract public <D extends Dao<Entity, ?>, Entity> D createDao(Class<Entity> entity) throws SQLException;
 

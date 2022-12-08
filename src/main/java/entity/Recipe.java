@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "recipes")
+@SuppressWarnings("unused")
 public class Recipe implements Serializable {
     /**
      * The ID of the recipe.

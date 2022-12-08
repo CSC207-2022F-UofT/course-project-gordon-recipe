@@ -15,8 +15,8 @@ import java.util.Scanner;
  * The main controller of the textual user interface.
  */
 public class MainController {
-    static Scanner scanner = new Scanner(System.in);
-    static TextualReader reader = new TextualReader(scanner);
+    static final Scanner scanner = new Scanner(System.in);
+    static final TextualReader reader = new TextualReader(scanner);
 
     public static void main(String[] args) throws Exception {
         // Silence Ormlite logging
@@ -35,8 +35,9 @@ public class MainController {
         List<TextualOperation> operations = List.of(
                 new RecipeManagerOperation(reader, new RecipeManager(database)),
                 new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
-                new RecipeSearcherOperation(reader, new RecipeSearcher(database)),
                 new RecipeLikerOperation(reader, new RecipeLiker(database)),
+                new RecipeNoteOperation(reader, new RecipeNoteTaker(database), new RecipeManager(database)),
+                new RecipeSearcherOperation(reader, new RecipeSearcher(database)),
                 new ChefModeOperation(reader, new ChefMode(database), new RecipeManager(database)),
                 new RecipeRecommenderOperation(reader, new RecipeRecommender(database))
         );

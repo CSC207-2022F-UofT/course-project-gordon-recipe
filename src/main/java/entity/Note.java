@@ -6,9 +6,11 @@ import database.LocalDateTimePersister;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "notes")
+@SuppressWarnings("unused")
 public class Note implements Serializable {
     /**
      * The ID of the note.
@@ -85,5 +87,10 @@ public class Note implements Serializable {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s", date.format(DateTimeFormatter.ISO_DATE), text);
     }
 }
