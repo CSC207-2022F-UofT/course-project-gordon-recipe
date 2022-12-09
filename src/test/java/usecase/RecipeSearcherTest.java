@@ -204,4 +204,13 @@ public class RecipeSearcherTest {
         Assertions.assertEquals(expected, returnRecipe);
     }
 
+    @Test
+    public void InDatabaseTest() throws SQLException {
+        Database db = new InMemoryDatabase();
+        RecipeSearcher rs = new RecipeSearcher(db);
+        Tag tag = new Tag("vegan");
+        Object ans = rs.inDatabase("vegan", "Tag");
+
+        Assertions.assertEquals(ans, null);
+    }
 }

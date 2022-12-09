@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="BUNDLED" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="interface_adapters.tui.MainController" />
-    <module name="project.main" />
+    <module name="course-project-gordon-recipe.main" />
     <option name="PROGRAM_PARAMETERS" value="--database local" />
     <extension name="coverage">
       <pattern>

@@ -58,7 +58,7 @@ public class RecipeRecommender {
      * @param recipeList the exhaustive list of recipes
      * @return a recommended recipe
      */
-    private Recipe recommendationAlgorithm(ArrayList<Recipe> recipeList) {
+    public Recipe recommendationAlgorithm(ArrayList<Recipe> recipeList) {
         int algorithmCount = 2;
 
         // Generate a random number to select the type of recommendation

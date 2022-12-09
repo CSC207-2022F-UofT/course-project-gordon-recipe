@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChefModeTest {
@@ -77,4 +78,20 @@ public class ChefModeTest {
 
         Assertions.assertNull(chefMode.showPreviousStep());
     }
+
+    @Test
+    public void ChefModeInitializerTest() throws SQLException {
+        Database db = new InMemoryDatabase();
+        ChefMode cm = new ChefMode(db);
+
+        Recipe sushi = new Recipe("sushi", 1, 1);
+        cm.setRecipe(sushi);
+        List<Step> stepList = new ArrayList<>();
+        Assertions.assertEquals(cm.getSteps(), stepList);
+
+
+
+
+    }
+
 }
