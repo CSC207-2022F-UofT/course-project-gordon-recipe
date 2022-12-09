@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RecipeSearcherTest {
 
-    private RecipeInteractor manager;
+    private RecipeInteractor recipeInteractor;
     private RecipeSearcher searcher;
     private Dao<RecipeIngredient, Integer> recipeIngredients;
 
@@ -27,7 +27,7 @@ public class RecipeSearcherTest {
     @BeforeEach
     public void Setup() throws SQLException {
         Database database = new InMemoryDatabase();
-        manager = new RecipeInteractor(database);
+        recipeInteractor = new RecipeInteractor(database);
         searcher = new RecipeSearcher(database);
         recipeIngredients = database.getDao(RecipeIngredient.class);
         recipeTools = database.getDao(RecipeTool.class);
@@ -41,9 +41,9 @@ public class RecipeSearcherTest {
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
 
-        manager.createRecipe(pie);
-        manager.createRecipe(tomatoSpaghetti);
-        manager.createRecipe(steak);
+        recipeInteractor.createRecipe(pie);
+        recipeInteractor.createRecipe(tomatoSpaghetti);
+        recipeInteractor.createRecipe(steak);
 
         Ingredient beefSirloin = new Ingredient("Beef Sirloin");
 
@@ -70,9 +70,9 @@ public class RecipeSearcherTest {
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
 
-        manager.createRecipe(pie);
-        manager.createRecipe(tomatoSpaghetti);
-        manager.createRecipe(steak);
+        recipeInteractor.createRecipe(pie);
+        recipeInteractor.createRecipe(tomatoSpaghetti);
+        recipeInteractor.createRecipe(steak);
 
         Tool pan = new Tool("Pan");
 
@@ -99,9 +99,9 @@ public class RecipeSearcherTest {
         Recipe tomatoSpaghetti = new Recipe("Tomato Spaghetti", 2, 20);
         Recipe steak = new Recipe("Steak", 1, 15);
 
-        manager.createRecipe(pie);
-        manager.createRecipe(tomatoSpaghetti);
-        manager.createRecipe(steak);
+        recipeInteractor.createRecipe(pie);
+        recipeInteractor.createRecipe(tomatoSpaghetti);
+        recipeInteractor.createRecipe(steak);
 
         Tag beef = new Tag("Beef");
 
@@ -131,11 +131,11 @@ public class RecipeSearcherTest {
         Recipe friedTomatoEgg = new Recipe("Stir Fried Tomato and Egg", 2, 10);
 
 
-        manager.createRecipe(pie);
-        manager.createRecipe(tomatoSpaghetti);
-        manager.createRecipe(steak);
-        manager.createRecipe(tomatoJuice);
-        manager.createRecipe(friedTomatoEgg);
+        recipeInteractor.createRecipe(pie);
+        recipeInteractor.createRecipe(tomatoSpaghetti);
+        recipeInteractor.createRecipe(steak);
+        recipeInteractor.createRecipe(tomatoJuice);
+        recipeInteractor.createRecipe(friedTomatoEgg);
 
         Ingredient tomato = new Ingredient("Tomato");
 
@@ -171,11 +171,11 @@ public class RecipeSearcherTest {
         Recipe friedTomatoEgg = new Recipe("Stir Fried Tomato and Egg", 2, 10);
 
 
-        manager.createRecipe(pie);
-        manager.createRecipe(tomatoSpaghetti);
-        manager.createRecipe(steak);
-        manager.createRecipe(tomatoJuice);
-        manager.createRecipe(friedTomatoEgg);
+        recipeInteractor.createRecipe(pie);
+        recipeInteractor.createRecipe(tomatoSpaghetti);
+        recipeInteractor.createRecipe(steak);
+        recipeInteractor.createRecipe(tomatoJuice);
+        recipeInteractor.createRecipe(friedTomatoEgg);
 
         Ingredient tomato = new Ingredient("Tomato");
         Ingredient pasta = new Ingredient("Pasta");
@@ -208,9 +208,8 @@ public class RecipeSearcherTest {
     public void InDatabaseTest() throws SQLException {
         Database db = new InMemoryDatabase();
         RecipeSearcher rs = new RecipeSearcher(db);
-        Tag tag = new Tag("vegan");
         Object ans = rs.inDatabase("vegan", "Tag");
 
-        Assertions.assertEquals(ans, null);
+        Assertions.assertNull(ans);
     }
 }

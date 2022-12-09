@@ -273,7 +273,7 @@ public class RecipeInteractor {
                             .prepare()
             ).stream();
 
-            return recipeTags.map(RecipeTag::getTag).collect(Collectors.toList());
+            return recipeTags.map(RecipeTag::getPreparationItem).collect(Collectors.toList());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
