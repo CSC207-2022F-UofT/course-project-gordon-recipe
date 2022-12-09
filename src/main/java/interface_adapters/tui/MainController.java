@@ -5,6 +5,7 @@ import com.j256.ormlite.logger.Logger;
 import database.Database;
 import database.InMemoryDatabase;
 import database.LocalDatabase;
+import interactor.RecipeInteractor;
 import interface_adapters.tui.controllers.*;
 import usecase.*;
 
@@ -31,14 +32,16 @@ public class MainController {
             database = new InMemoryDatabase();
         }
 
+        RecipeInteractor recipeInteractor = new RecipeInteractor(database);
+
         // Set up operations and run them
         List<TextualOperation> operations = List.of(
-                new RecipeManagerOperation(reader, new RecipeManager(database)),
-                new RecipeTransferOperation(reader, new RecipeDataConverter(database), new RecipeManager(database)),
+                new RecipeManagerOperation(reader, recipeInteractor),
+                new RecipeTransferOperation(reader, new RecipeDataConverter(database), recipeInteractor),
                 new RecipeLikerOperation(reader, new RecipeLiker(database)),
-                new RecipeNoteOperation(reader, new RecipeNoteTaker(database), new RecipeManager(database)),
+                new RecipeNoteOperation(reader, new RecipeNoteTaker(database), recipeInteractor),
                 new RecipeSearcherOperation(reader, new RecipeSearcher(database)),
-                new ChefModeOperation(reader, new ChefMode(database), new RecipeManager(database)),
+                new ChefModeOperation(reader, new ChefMode(database), recipeInteractor),
                 new RecipeRecommenderOperation(reader, new RecipeRecommender(database))
         );
 

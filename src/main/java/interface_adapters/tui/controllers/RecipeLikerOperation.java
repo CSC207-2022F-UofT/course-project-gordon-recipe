@@ -8,6 +8,9 @@ import usecase.RecipeLiker;
 
 import java.util.List;
 
+/**
+ * An operation for running the recipe liker use-case.
+ */
 public class RecipeLikerOperation implements TextualOperation {
     private final RecipeLiker recipeLiker;
     private final TextualReader reader;

@@ -1,4 +1,4 @@
-package usecase;
+package interactor;
 
 import com.j256.ormlite.dao.Dao;
 import database.Database;
@@ -11,18 +11,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * RecipeManager is a use-case for managing recipes
+ * RecipeManager is an interactor for managing recipes.
  */
-public class RecipeManager {
+@SuppressWarnings("SpellCheckingInspection")
+public class RecipeInteractor {
     private final Dao<Recipe, Object> recipes;
     private final Database database;
 
     /**
-     * Initializes a new recipe manager.
+     * Initializes a new recipe interactor.
      *
      * @param database the database to manage recipes in
      */
-    public RecipeManager(Database database) {
+    public RecipeInteractor(Database database) {
         this.database = database;
         this.recipes = database.getDao(Recipe.class);
     }
@@ -133,7 +134,7 @@ public class RecipeManager {
 
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
             try {
-                ingredientsDao.createIfNotExists(recipeIngredient.getIngredient());
+                ingredientsDao.createIfNotExists(recipeIngredient.getPreparationItem());
                 recipeIngredientsDao.createIfNotExists(recipeIngredient);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -187,7 +188,7 @@ public class RecipeManager {
                             .prepare()
             ).stream();
 
-            return recipeTools.map(RecipeTool::getTool).collect(Collectors.toList());
+            return recipeTools.map(RecipeTool::getPreparationItem).collect(Collectors.toList());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -272,7 +273,7 @@ public class RecipeManager {
                             .prepare()
             ).stream();
 
-            return recipeTags.map(RecipeTag::getTag).collect(Collectors.toList());
+            return recipeTags.map(RecipeTag::getPreparationItem).collect(Collectors.toList());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

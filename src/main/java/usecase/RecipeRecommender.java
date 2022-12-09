@@ -63,9 +63,11 @@ public class RecipeRecommender {
 
         // Generate a random number to select the type of recommendation
         int algorithmChoice = ThreadLocalRandom.current().nextInt(0, algorithmCount);
+
         if (algorithmChoice == 0) {
             return recommendationTypeA(recipeList);
         }
+
         return recommendationTypeB(recipeList);
     }
 
@@ -137,8 +139,6 @@ public class RecipeRecommender {
         // else, choose a random liked recipe
         Collections.shuffle(previouslyLiked);
         return previouslyLiked.get(0);
-
     }
-
 }
 

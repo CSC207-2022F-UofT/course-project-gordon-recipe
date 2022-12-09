@@ -65,7 +65,19 @@ public class ToolTest {
     @Test
     public void SetNameTest() {
         Tool tool = new Tool("blender");
-        tool.setName("nutribullet");
-        Assertions.assertEquals(tool.getName(), "nutribullet");
+        tool.setName("food processor");
+        Assertions.assertEquals(tool.getName(), "food processor");
+    }
+
+    @Test
+    public void CreateRecipeToolTest() {
+        Tool vegan = new Tool("vegan");
+        Recipe pie = new Recipe("Pie", 10, 10);
+
+        RecipeTool recipeTool = new RecipeTool(pie, vegan, 10);
+
+        Assertions.assertEquals(10, recipeTool.getID());
+        Assertions.assertEquals(pie, recipeTool.getRecipe());
+        Assertions.assertEquals(vegan, recipeTool.getPreparationItem());
     }
 }

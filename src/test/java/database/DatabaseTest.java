@@ -51,4 +51,13 @@ public class DatabaseTest {
         Recipe retrievedRecipe = recipes.queryForId(pie.getID());
         Assertions.assertEquals(pie.getServings(), retrievedRecipe.getServings());
     }
+
+    @Test
+    public void DatabasePersistenceErrorTest() {
+        String errorMessage = "Something went wrong!";
+
+        Exception error = new Database.PersistenceError(errorMessage);
+
+        Assertions.assertEquals(errorMessage, error.getMessage());
+    }
 }

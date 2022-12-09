@@ -4,7 +4,7 @@ import entity.*;
 import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
-import usecase.RecipeManager;
+import interactor.RecipeInteractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class RecipeManagerOperation implements TextualOperation {
     private final TextualReader reader;
-    private final RecipeManager recipeManager;
+    private final RecipeInteractor recipeInteractor;
 
     private final List<TextualOperation> operations = List.of(
             new RecipeCreator(),
@@ -24,9 +24,9 @@ public class RecipeManagerOperation implements TextualOperation {
             new RecipeDeleter()
     );
 
-    public RecipeManagerOperation(TextualReader reader, RecipeManager recipeManager) {
+    public RecipeManagerOperation(TextualReader reader, RecipeInteractor recipeInteractor) {
         this.reader = reader;
-        this.recipeManager = recipeManager;
+        this.recipeInteractor = recipeInteractor;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class RecipeManagerOperation implements TextualOperation {
 
             recipe = new Recipe(title, servings, prep_time);
 
-            recipeManager.createRecipe(recipe);
+            recipeInteractor.createRecipe(recipe);
 
             Colour.info("Created recipe %s", title);
             reader.chooseOperation(operations, title);
@@ -93,7 +93,7 @@ public class RecipeManagerOperation implements TextualOperation {
             @Override
             public void run() {
                 List<Tool> tools = reader.getList("Tool").stream().map(Tool::new).collect(Collectors.toList());
-                recipeManager.createRecipeTools(recipe, tools);
+                recipeInteractor.createRecipeTools(recipe, tools);
 
                 Colour.info("Added %d tools to the recipe", tools.size());
             }
@@ -114,7 +114,7 @@ public class RecipeManagerOperation implements TextualOperation {
             @Override
             public void run() {
                 List<Tag> tags = reader.getList("Tag").stream().map(Tag::new).collect(Collectors.toList());
-                recipeManager.createRecipeTags(recipe, tags);
+                recipeInteractor.createRecipeTags(recipe, tags);
 
                 Colour.info("Added %d tags to the recipe", tags.size());
             }
@@ -145,7 +145,7 @@ public class RecipeManagerOperation implements TextualOperation {
                     counter += 1;
                 }
 
-                recipeManager.createRecipeSteps(steps);
+                recipeInteractor.createRecipeSteps(steps);
                 Colour.info("Added %d steps to the recipe", steps.size());
             }
         }
@@ -181,7 +181,7 @@ public class RecipeManagerOperation implements TextualOperation {
                     recipeIngredients.add(recipeIngredient);
                 }
 
-                recipeManager.createRecipeIngredients(recipeIngredients);
+                recipeInteractor.createRecipeIngredients(recipeIngredients);
 
                 Colour.info("Added %d ingredients to the recipe.", recipeIngredients.size());
             }
@@ -202,7 +202,7 @@ public class RecipeManagerOperation implements TextualOperation {
 
         @Override
         public void run() {
-            ArrayList<Recipe> recipes = recipeManager.getAllRecipes();
+            ArrayList<Recipe> recipes = recipeInteractor.getAllRecipes();
 
             Recipe recipe = reader.chooseFromList(recipes, "All Recipes");
 
@@ -215,19 +215,19 @@ public class RecipeManagerOperation implements TextualOperation {
             String servings = String.format("Serves %d", recipe.getServings());
             String prep = String.format("%dm prep time", recipe.getPrepTime());
 
-            String tools = recipeManager
+            String tools = recipeInteractor
                     .getTools(recipe)
                     .stream()
                     .map(t -> String.format("- %s\n", t.getName()))
                     .collect(Collectors.joining());
 
-            String ingredients = recipeManager
+            String ingredients = recipeInteractor
                     .getRecipeIngredients(recipe)
                     .stream()
                     .map(i -> String.format("- %s\n", i.toString()))
                     .collect(Collectors.joining());
 
-            String steps = recipeManager
+            String steps = recipeInteractor
                     .getSteps(recipe)
                     .stream()
                     .map(s -> String.format("%d. %s\n", s.getNumber() + 1, s.getText()))
@@ -262,12 +262,12 @@ public class RecipeManagerOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
 
             Recipe recipe = reader.chooseFromList(recipes, "Recipe to Delete");
 
             if (recipe != null) {
-                recipeManager.deleteRecipe(recipe);
+                recipeInteractor.deleteRecipe(recipe);
                 Colour.info("Deleted %s", recipe.getName());
             }
         }
@@ -292,7 +292,7 @@ public class RecipeManagerOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
             recipe = reader.chooseFromList(recipes, "Recipe to Edit");
 
             if (recipe == null) {
@@ -324,7 +324,7 @@ public class RecipeManagerOperation implements TextualOperation {
                 recipe.setServings(servings);
                 recipe.setPrepTime(prepTime);
 
-                recipeManager.updateRecipe(recipe);
+                recipeInteractor.updateRecipe(recipe);
             }
         }
     }

@@ -24,8 +24,12 @@ public class SQLiteDatabase extends Database {
     }
 
     @Override
-    public <D extends Dao<Entity, ?>, Entity> D createDao(Class<Entity> entity) throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, entity);
-        return DaoManager.createDao(connectionSource, entity);
+    public <D extends Dao<Entity, ?>, Entity> D createDao(Class<Entity> entity) throws PersistenceError {
+        try {
+            TableUtils.createTableIfNotExists(connectionSource, entity);
+            return DaoManager.createDao(connectionSource, entity);
+        } catch (SQLException e) {
+            throw new PersistenceError(e.getMessage());
+        }
     }
 }

@@ -116,7 +116,7 @@ public class RecipeSearcher {
         }
 
         for (RecipePreparationItem recipePreparation : prepList) {
-            preparationList.add(recipePreparation.getPreparation());
+            preparationList.add(recipePreparation.getPreparationItem());
         }
 
         return preparationList;

@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * RecipeNoteTaker is a use-case for creating, deleting, and editing notes on a recipe.
+ */
 public class RecipeNoteTaker {
     private final Dao<Note, String> notes;
 
     /**
-     * Initializes a corresponding note taker base on the recipe.
+     * Initializes a note taker.
      *
      * @param database the database to store note in
      */

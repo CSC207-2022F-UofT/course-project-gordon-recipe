@@ -5,6 +5,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 
+/**
+ * A helper class that ties a recipe to an ingredient.
+ */
 @DatabaseTable(tableName = "recipe_ingredients")
 @SuppressWarnings("unused")
 public class RecipeIngredient implements Serializable, RecipePreparationItem {
@@ -39,11 +42,7 @@ public class RecipeIngredient implements Serializable, RecipePreparationItem {
     }
 
     @Override
-    public Ingredient getPreparation() {
-        return ingredient;
-    }
-
-    public Ingredient getIngredient() {
+    public Ingredient getPreparationItem() {
         return ingredient;
     }
 
