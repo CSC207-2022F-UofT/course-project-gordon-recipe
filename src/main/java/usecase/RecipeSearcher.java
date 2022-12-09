@@ -27,6 +27,13 @@ public class RecipeSearcher {
         this.tags = database.getDao(Tag.class);
     }
 
+    /**
+     * Searches through the Recipe database to find recipes
+     * that contain certain Ingredient, Tool, or Tag.
+     *
+     * @param searchList List of Ingredient, Tool, or Tag to search in the recipes
+     * @return List of Recipe that contains all elements in searchList
+     */
     public List<Recipe> searchRecipe(List<PreparationItem> searchList) {
         List<Recipe> returnRecipe = new ArrayList<>();
 
@@ -65,8 +72,21 @@ public class RecipeSearcher {
         return returnRecipe;
     }
 
+
+    /**
+     * Searches for RecipePreparationItem in a recipe and
+     * if the RecipePreparation linked to RecipePreparationItem have same class as prep,
+     * adds it to a list and returns the list of RecipePreparation.
+     *
+     * @param recipe The recipe to search Preparations from
+     * @param prep   The Preparation entity used to determine whether to search
+     *               for Ingredients, Tools, or Tags
+     * @param <R>    Classes under RecipePreparationItem: RecipeIngredient, RecipeTool, or RecipeTag
+     * @return List of RecipePreparation that are in the recipe and are same class as prep.
+     */
     @SuppressWarnings("unchecked")
-    private <R extends RecipePreparationItem> List<PreparationItem> searchPreparation(Recipe recipe, PreparationItem prep) {
+    private <R extends RecipePreparationItem> List<PreparationItem>
+    searchPreparation(Recipe recipe, PreparationItem prep) {
         List<PreparationItem> preparationList = new ArrayList<>();
         List<R> prepList = new ArrayList<>();
 
@@ -102,8 +122,15 @@ public class RecipeSearcher {
         return preparationList;
     }
 
-    private boolean hasRecipe(List<Recipe> returnRecipe, Recipe recipe) {
-        for (Recipe r : returnRecipe) {
+    /**
+     * Checks whether recipeList contains recipe.
+     *
+     * @param recipeList List of Recipes
+     * @param recipe     Recipe to check if it is in the list
+     * @return True iff the recipe is in the list
+     */
+    private boolean hasRecipe(List<Recipe> recipeList, Recipe recipe) {
+        for (Recipe r : recipeList) {
             if (recipe.equals(r)) {
                 return true;
             }
@@ -112,6 +139,14 @@ public class RecipeSearcher {
         return false;
     }
 
+    /**
+     * Checks if any item in the database has the certain name and type
+     * and returns it. null is returned when there is no item satisfying the criteria.
+     *
+     * @param str  The name of the Preparation
+     * @param kind The name of class of Preparation, ex: "Ingredient"
+     * @return The Preparation entity that has the name and type
+     */
     public PreparationItem inDatabase(String str, String kind) {
         switch (kind) {
             case "Ingredient":
