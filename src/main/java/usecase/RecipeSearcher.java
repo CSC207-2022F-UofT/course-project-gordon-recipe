@@ -28,7 +28,8 @@ public class RecipeSearcher {
     }
 
     /**
-     * Searches for recipes that contain certain Ingredient, Tool, or Tag.
+     * Searches through the Recipe database to find recipes
+     * that contain certain Ingredient, Tool, or Tag.
      *
      * @param searchList List of Ingredient, Tool, or Tag to search in the recipes
      * @return List of Recipe that contains all elements in searchList
@@ -73,16 +74,19 @@ public class RecipeSearcher {
 
 
     /**
-     * Searches for RecipePreparation that are in a recipe and have same class as prep.
+     * Searches for RecipePreparationItem in a recipe and
+     * if the RecipePreparation linked to RecipePreparationItem have same class as prep,
+     * adds it to a list and returns the list of RecipePreparation.
      *
      * @param recipe The recipe to search Preparations from
      * @param prep   The Preparation entity used to determine whether to search
      *               for Ingredients, Tools, or Tags
-     * @param <T2>   Classes under RecipePreparation: RecipeIngredient, RecipeTool, or RecipeTag
+     * @param <R>    Classes under RecipePreparationItem: RecipeIngredient, RecipeTool, or RecipeTag
      * @return List of RecipePreparation that are in the recipe and are same class as prep.
      */
     @SuppressWarnings("unchecked")
-    private <R extends RecipePreparationItem> List<PreparationItem> searchPreparation(Recipe recipe, PreparationItem prep) {
+    private <R extends RecipePreparationItem> List<PreparationItem>
+    searchPreparation(Recipe recipe, PreparationItem prep) {
         List<PreparationItem> preparationList = new ArrayList<>();
         List<R> prepList = new ArrayList<>();
 
@@ -137,10 +141,10 @@ public class RecipeSearcher {
 
     /**
      * Checks if any item in the database has the certain name and type
-     * and returns it.
+     * and returns it. null is returned when there is no item satisfying the criteria.
      *
-     * @param str The name of the Preparation
-     * @param typ The type of the Preparation
+     * @param str  The name of the Preparation
+     * @param kind The name of class of Preparation, ex: "Ingredient"
      * @return The Preparation entity that has the name and type
      */
     public PreparationItem inDatabase(String str, String kind) {
