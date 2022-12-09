@@ -30,7 +30,7 @@ public class RecipeDataConverterTest {
         Step step2 = new Step("let D be the diameter of A", 2, recipe);
         Step step3 = new Step("pi = C/D", 3, recipe);
 
-        Note tauism = new Note("apple tau might be twice as tasty", recipe);
+        Note tau = new Note("apple tau might be twice as tasty", recipe);
         Note iFruit = new Note("make sure the apple is a fruit, not a computer", recipe);
 
         db.getDao(Recipe.class).create(recipe);
@@ -41,7 +41,7 @@ public class RecipeDataConverterTest {
         db.getDao(Tool.class).create(measuringTape);
         db.getDao(RecipeTool.class).create(recipeMeasuringTape);
         db.getDao(Step.class).create(List.of(step0, step1, step2, step3));
-        db.getDao(Note.class).create(List.of(tauism, iFruit));
+        db.getDao(Note.class).create(List.of(tau, iFruit));
 
         RecipeDataConverter converter = new RecipeDataConverter(db);
         RecipeData data = converter.exportRecipe(recipe);
@@ -81,7 +81,7 @@ public class RecipeDataConverterTest {
         Step step2 = new Step("let D be the diameter of A", 2, recipe);
         Step step3 = new Step("pi = C/D", 3, recipe);
 
-        Note tauism = new Note("apple tau might be twice as tasty", recipe);
+        Note tau = new Note("apple tau might be twice as tasty", recipe);
         Note iFruit = new Note("make sure the apple is a fruit, not a computer", recipe);
 
         RecipeDataConverter converter = new RecipeDataConverter(db);
@@ -91,7 +91,7 @@ public class RecipeDataConverterTest {
                 List.of(recipeRound),
                 List.of(recipeMeasuringTape),
                 List.of(step0, step1, step2, step3),
-                List.of(tauism, iFruit)
+                List.of(tau, iFruit)
         );
         converter.importRecipe(data);
 

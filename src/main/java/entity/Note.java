@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "notes")
+@SuppressWarnings("unused")
 public class Note implements Serializable {
     /**
      * The ID of the note.

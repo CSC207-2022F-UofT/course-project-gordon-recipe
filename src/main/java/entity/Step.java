@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "steps")
+@SuppressWarnings("unused")
 public class Step implements Serializable {
     /**
      * The ID of the step.

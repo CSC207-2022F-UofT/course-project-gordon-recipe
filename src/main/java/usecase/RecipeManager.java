@@ -72,6 +72,7 @@ public class RecipeManager {
      * @param recipe The recipe to attach tags to
      * @param tags   The tags to attach to the recipe
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<RecipeTag> createRecipeTags(Recipe recipe, List<Tag> tags) {
         Dao<Tag, String> tagsDao = database.getDao(Tag.class);
         Dao<RecipeTag, Integer> recipeTagsDao = database.getDao(RecipeTag.class);
@@ -99,6 +100,7 @@ public class RecipeManager {
      * @param recipe The recipe to attach tools to
      * @param tools  The tools to attach to the recipe
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<RecipeTool> createRecipeTools(Recipe recipe, List<Tool> tools) {
         Dao<Tool, String> toolsDao = database.getDao(Tool.class);
         Dao<RecipeTool, Integer> recipeToolsDao = database.getDao(RecipeTool.class);
@@ -252,4 +254,29 @@ public class RecipeManager {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Returns a recipe's tags
+     *
+     * @param recipe the recipe to get the tags for
+     * @return the tags of the recipe
+     */
+    public List<Tag> getTags(Recipe recipe) {
+        Dao<RecipeTag, Integer> recipeTagsDao = database.getDao(RecipeTag.class);
+
+        try {
+            Stream<RecipeTag> recipeTags = recipeTagsDao.query(
+                    recipeTagsDao.queryBuilder()
+                            .orderBy("tag_id", true)
+                            .where().eq("recipe_id", recipe.getID())
+                            .prepare()
+            ).stream();
+
+            return recipeTags.map(RecipeTag::getTag).collect(Collectors.toList());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

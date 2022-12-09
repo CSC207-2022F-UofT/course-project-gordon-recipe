@@ -4,7 +4,8 @@ import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable, Preparation {
+@SuppressWarnings("unused")
+public class Ingredient implements Serializable, PreparationItem {
     /**
      * The name of the ingredient.
      */

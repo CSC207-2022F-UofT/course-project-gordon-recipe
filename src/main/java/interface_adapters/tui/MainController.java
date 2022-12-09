@@ -15,8 +15,8 @@ import java.util.Scanner;
  * The main controller of the textual user interface.
  */
 public class MainController {
-    static Scanner scanner = new Scanner(System.in);
-    static TextualReader reader = new TextualReader(scanner);
+    static final Scanner scanner = new Scanner(System.in);
+    static final TextualReader reader = new TextualReader(scanner);
 
     public static void main(String[] args) throws Exception {
         // Silence Ormlite logging

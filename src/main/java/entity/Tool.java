@@ -6,7 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "tools")
-public class Tool implements Serializable, Preparation {
+@SuppressWarnings("unused")
+public class Tool implements Serializable, PreparationItem {
     /**
      * The name of the tool.
      */
