@@ -20,7 +20,7 @@ From within IntelliJ, select one of the following two run configurations from th
 
 If you're getting an error like the highlighted run configuration above, follow these steps:
 
-1. Click **Edit Configurations...** from the run menu (in the image above)
+1. Click "Edit Configurations..." from the run menu (in the image above)
 2. Change the selected module to "main"
 <img src="images/changing-module.png" alt="Changing run config module"/>
-3. Click **Apply** to save your changes. You should now be able to run the configuration from the run menu.
+3. Click "Apply" to save your changes. You should now be able to run the configuration from the run menu.
