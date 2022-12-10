@@ -5,6 +5,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 
+/**
+ * A helper class that ties a recipe to a tool.
+ */
 @DatabaseTable(tableName = "recipe_tools")
 @SuppressWarnings("unused")
 public class RecipeTool implements Serializable, RecipePreparationItem {
@@ -32,10 +35,6 @@ public class RecipeTool implements Serializable, RecipePreparationItem {
 
     }
 
-    public Tool getTool() {
-        return tool;
-    }
-
     public Recipe getRecipe() {
         return recipe;
     }
@@ -45,7 +44,7 @@ public class RecipeTool implements Serializable, RecipePreparationItem {
     }
 
     @Override
-    public Tool getPreparation() {
+    public Tool getPreparationItem() {
         return tool;
     }
 }

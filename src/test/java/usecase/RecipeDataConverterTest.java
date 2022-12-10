@@ -49,10 +49,10 @@ public class RecipeDataConverterTest {
         Assertions.assertEquals("apple pi", data.getRecipe().getName());
         Assertions.assertEquals(3, data.getRecipe().getServings());
         Assertions.assertEquals(14, data.getRecipe().getPrepTime());
-        Assertions.assertEquals("apple", data.getRecipeIngredients().get(0).getIngredient().getName());
+        Assertions.assertEquals("apple", data.getRecipeIngredients().get(0).getPreparationItem().getName());
         Assertions.assertEquals("22 sevenths", data.getRecipeIngredients().get(0).getQuantity());
-        Assertions.assertEquals("round", data.getRecipeTags().get(0).getTag().getName());
-        Assertions.assertEquals("measuring tape", data.getRecipeTools().get(0).getTool().getName());
+        Assertions.assertEquals("round", data.getRecipeTags().get(0).getPreparationItem().getName());
+        Assertions.assertEquals("measuring tape", data.getRecipeTools().get(0).getPreparationItem().getName());
         Assertions.assertEquals("let A be an apple", data.getSteps().get(0).getText());
         Assertions.assertEquals("let C be the circumference of A", data.getSteps().get(1).getText());
         Assertions.assertEquals("let D be the diameter of A", data.getSteps().get(2).getText());
@@ -107,11 +107,11 @@ public class RecipeDataConverterTest {
 
         Assertions.assertEquals("apple pi", recipes.get(0).getName());
         Assertions.assertEquals("apple", ingredients.get(0).getName());
-        Assertions.assertEquals("apple", recipeIngredients.get(0).getIngredient().getName());
+        Assertions.assertEquals("apple", recipeIngredients.get(0).getPreparationItem().getName());
         Assertions.assertEquals("round", tags.get(0).getName());
-        Assertions.assertEquals("round", recipeTags.get(0).getTag().getName());
+        Assertions.assertEquals("round", recipeTags.get(0).getPreparationItem().getName());
         Assertions.assertEquals("measuring tape", tools.get(0).getName());
-        Assertions.assertEquals("measuring tape", recipeTools.get(0).getTool().getName());
+        Assertions.assertEquals("measuring tape", recipeTools.get(0).getPreparationItem().getName());
         Assertions.assertEquals("let A be an apple", steps.get(0).getText());
         Assertions.assertEquals("let C be the circumference of A", steps.get(1).getText());
         Assertions.assertEquals("let D be the diameter of A", steps.get(2).getText());

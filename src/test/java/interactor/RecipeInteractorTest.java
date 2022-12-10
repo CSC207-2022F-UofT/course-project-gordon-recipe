@@ -1,4 +1,4 @@
-package usecase;
+package interactor;
 
 import com.j256.ormlite.dao.Dao;
 import database.Database;
@@ -12,22 +12,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeManagerTest {
+@SuppressWarnings("SpellCheckingInspection")
+public class RecipeInteractorTest {
     private Database database;
-    private RecipeManager manager;
+    private RecipeInteractor recipeInteractor;
     private Dao<Recipe, String> recipes;
 
     @BeforeEach
     public void Setup() throws SQLException {
         database = new InMemoryDatabase();
-        manager = new RecipeManager(database);
+        recipeInteractor = new RecipeInteractor(database);
         recipes = database.getDao(Recipe.class);
     }
 
     @Test
     public void CreatingRecipeSavingTest() throws SQLException {
         Recipe pie = new Recipe("Pie", 3, 120);
-        manager.createRecipe(pie);
+        recipeInteractor.createRecipe(pie);
 
         Recipe retrievedRecipe = recipes.queryForId(pie.getID());
 
@@ -37,10 +38,10 @@ public class RecipeManagerTest {
     @Test
     public void UpdatingRecipeTest() throws SQLException {
         Recipe pie = new Recipe("Pie", 3, 120);
-        manager.createRecipe(pie);
+        recipeInteractor.createRecipe(pie);
 
         pie.setServings(10);
-        manager.updateRecipe(pie);
+        recipeInteractor.updateRecipe(pie);
 
         Recipe retrievedRecipe = recipes.queryForId(pie.getID());
 
@@ -51,11 +52,11 @@ public class RecipeManagerTest {
     public void DeletingRecipeTest() throws SQLException {
         Recipe pie = new Recipe("Pie", 10, 10);
 
-        manager.createRecipe(pie);
+        recipeInteractor.createRecipe(pie);
 
         Assertions.assertEquals(1, recipes.countOf());
 
-        manager.deleteRecipe(pie);
+        recipeInteractor.deleteRecipe(pie);
 
         Assertions.assertEquals(0, recipes.countOf());
     }
@@ -69,7 +70,7 @@ public class RecipeManagerTest {
 
         recipes.create(recipesList);
 
-        List<Recipe> retrievedRecipes = manager.getAllRecipes();
+        List<Recipe> retrievedRecipes = recipeInteractor.getAllRecipes();
 
         Assertions.assertTrue(retrievedRecipes.containsAll(recipesList));
     }
@@ -87,17 +88,13 @@ public class RecipeManagerTest {
         Recipe pie = new Recipe("Pie", 10, 10);
         recipes.create(pie);
 
-        manager.createRecipeTools(pie, tools);
+        recipeInteractor.createRecipeTools(pie, tools);
 
-        Assertions.assertEquals(2, manager.getTools(pie).size());
+        Assertions.assertEquals(2, recipeInteractor.getTools(pie).size());
     }
 
     @Test
     public void CreateRecipeTagsTest() throws SQLException {
-        Database db = new InMemoryDatabase();
-        RecipeManager manager = new RecipeManager(db);
-        Dao<Recipe, String> recipes = db.getDao(Recipe.class);
-
         Recipe pie = new Recipe("Pie", 10, 10);
         recipes.create(pie);
 
@@ -105,17 +102,14 @@ public class RecipeManagerTest {
         Tag vegan = new Tag("vegan");
         tagList.add(vegan);
 
-        manager.createRecipeTags(pie, tagList);
+        recipeInteractor.createRecipeTags(pie, tagList);
 
-        Assertions.assertEquals(manager.getTags(pie), tagList);
+        Assertions.assertEquals(recipeInteractor.getTags(pie), tagList);
     }
 
     @Test
     public void CreateRecipeIngredientsTest() throws SQLException {
-        Database db = new InMemoryDatabase();
-        RecipeManager manager = new RecipeManager(db);
-        Dao<RecipeIngredient, Integer> recipeIngredientsDao = db.getDao(RecipeIngredient.class);
-
+        Dao<RecipeIngredient, Integer> recipeIngredientsDao = database.getDao(RecipeIngredient.class);
 
         Recipe cake = new Recipe("cake", 3, 3);
             Ingredient flour = new Ingredient("flour");
@@ -126,17 +120,14 @@ public class RecipeManagerTest {
         List<RecipeIngredient> ingredientList = new ArrayList<>();
         ingredientList.add(cakeFlour);
 
-        manager.createRecipeIngredients(ingredientList);
+        recipeInteractor.createRecipeIngredients(ingredientList);
 
-        Assertions.assertEquals(ingredientList.get(0).getRecipe(), manager.getRecipeIngredients(cake).get(0).getRecipe());
+        Assertions.assertEquals(ingredientList.get(0).getRecipe(), recipeInteractor.getRecipeIngredients(cake).get(0).getRecipe());
 
     }
 
     @Test
-    public void CreateRecipeStepsTest() throws SQLException {
-        Database db = new InMemoryDatabase();
-        RecipeManager manager = new RecipeManager(db);
-
+    public void CreateRecipeStepsTest() {
         String text1 = "Add the fruit";
         int stepNum1 = 1;
         Recipe smoothie = new Recipe("smoothie", 1, 1);
@@ -145,11 +136,8 @@ public class RecipeManagerTest {
         List<Step> stepList = new ArrayList<>();
         stepList.add(step1);
 
-        manager.createRecipeSteps(stepList);
+        recipeInteractor.createRecipeSteps(stepList);
 
-        Assertions.assertEquals(manager.getSteps(smoothie).get(0).getRecipe(), stepList.get(0).getRecipe());
-
+        Assertions.assertEquals(recipeInteractor.getSteps(smoothie).get(0).getRecipe(), stepList.get(0).getRecipe());
     }
-
-
 }

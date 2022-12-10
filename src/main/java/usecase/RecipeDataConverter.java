@@ -88,13 +88,13 @@ public class RecipeDataConverter {
             stepDao.create(recipeData.getSteps());
             noteDao.create(recipeData.getNotes());
             for (RecipeIngredient recipeIngredient : recipeData.getRecipeIngredients()) {
-                ingredientDao.create(recipeIngredient.getIngredient());
+                ingredientDao.create(recipeIngredient.getPreparationItem());
             }
             for (RecipeTag recipeTag : recipeData.getRecipeTags()) {
-                tagDao.create(recipeTag.getTag());
+                tagDao.create(recipeTag.getPreparationItem());
             }
             for (RecipeTool recipeTool : recipeData.getRecipeTools()) {
-                toolDao.create(recipeTool.getTool());
+                toolDao.create(recipeTool.getPreparationItem());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -5,6 +5,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 
+/**
+ * A helper class that ties a recipe to a tag.
+ */
 @DatabaseTable(tableName = "recipe_tags")
 @SuppressWarnings("unused")
 public class RecipeTag implements Serializable, RecipePreparationItem {
@@ -33,11 +36,7 @@ public class RecipeTag implements Serializable, RecipePreparationItem {
     }
 
     @Override
-    public Tag getPreparation() {
-        return tag;
-    }
-
-    public Tag getTag() {
+    public Tag getPreparationItem() {
         return tag;
     }
 

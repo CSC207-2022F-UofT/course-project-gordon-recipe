@@ -5,7 +5,7 @@ import entity.Recipe;
 import interface_adapters.tui.Colour;
 import interface_adapters.tui.TextualOperation;
 import interface_adapters.tui.TextualReader;
-import usecase.RecipeManager;
+import interactor.RecipeInteractor;
 import usecase.RecipeNoteTaker;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class RecipeNoteOperation implements TextualOperation {
     private final TextualReader reader;
     private final RecipeNoteTaker recipeNoteTaker;
-    private final RecipeManager recipeManager;
+    private final RecipeInteractor recipeInteractor;
 
     private final List<TextualOperation> operations = List.of(
             new NoteCreator(),
@@ -26,10 +26,10 @@ public class RecipeNoteOperation implements TextualOperation {
             new NoteDeleter()
     );
 
-    public RecipeNoteOperation(TextualReader reader, RecipeNoteTaker recipeNoteTaker, RecipeManager recipeManager) {
+    public RecipeNoteOperation(TextualReader reader, RecipeNoteTaker recipeNoteTaker, RecipeInteractor recipeInteractor) {
         this.reader = reader;
         this.recipeNoteTaker = recipeNoteTaker;
-        this.recipeManager = recipeManager;
+        this.recipeInteractor = recipeInteractor;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
 
             if (recipes.size() < 1) {
                 Colour.info("There are no recipes to add notes to.");
@@ -96,12 +96,12 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
 
             Recipe recipe = reader.chooseFromList(recipes, "Recipe to View");
 
             if (recipe != null) {
-                List<Note> notes = recipeManager.getNotes(recipe);
+                List<Note> notes = recipeInteractor.getNotes(recipe);
 
                 if (notes.size() < 1) {
                     Colour.info("There are no notes on this recipe.");
@@ -129,14 +129,14 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
             Recipe recipe = reader.chooseFromList(recipes, "Recipe to Edit Notes On");
 
             if (recipe == null) {
                 return;
             }
 
-            List<Note> notes = recipeManager.getNotes(recipe);
+            List<Note> notes = recipeInteractor.getNotes(recipe);
             Note note = reader.chooseFromList(notes, "Note to Edit");
 
             if (note == null) {
@@ -165,14 +165,14 @@ public class RecipeNoteOperation implements TextualOperation {
 
         @Override
         public void run() {
-            List<Recipe> recipes = recipeManager.getAllRecipes();
+            List<Recipe> recipes = recipeInteractor.getAllRecipes();
             Recipe recipe = reader.chooseFromList(recipes, "Recipe to Delete Notes On");
 
             if (recipe == null) {
                 return;
             }
 
-            List<Note> notes = recipeManager.getNotes(recipe);
+            List<Note> notes = recipeInteractor.getNotes(recipe);
 
             Note note = reader.chooseFromList(notes, "Note to Delete");
 
